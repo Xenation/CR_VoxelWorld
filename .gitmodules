@@ -1,0 +1,3 @@
+[submodule "CR_VoxelWorld/CleanRender"]
+	path = CR_VoxelWorld/CleanRender
+	url = https://github.com/Xenation/CleanRender.git
