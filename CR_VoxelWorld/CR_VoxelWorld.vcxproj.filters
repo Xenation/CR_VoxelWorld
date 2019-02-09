@@ -35,16 +35,16 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\shaders\basic\fs.glsl">
-      <Filter>Resource Files\shaders\basic</Filter>
-    </None>
-    <None Include="res\shaders\basic\vs.glsl">
-      <Filter>Resource Files\shaders\basic</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="MainScene.h">
       <Filter>Header Files\Scenes</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="res\shaders\basic\fs.glsl">
+      <Filter>Resource Files\shaders\basic</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="res\shaders\basic\vs.glsl">
+      <Filter>Resource Files\shaders\basic</Filter>
+    </CopyFileToFolders>
   </ItemGroup>
 </Project>
