@@ -13,5 +13,38 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\Scenes">
+      <UniqueIdentifier>{007eda0b-0d23-411b-9b92-f963deb9b0ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Scenes">
+      <UniqueIdentifier>{54968c4e-930c-4778-a3dd-87072bd9c281}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\shaders">
+      <UniqueIdentifier>{0c6a352b-7cf7-4c0d-ae60-cd6a0a1ff7d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\shaders\basic">
+      <UniqueIdentifier>{66705d5c-f2f3-45e5-b828-7f5f698a87a1}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MainScene.cpp">
+      <Filter>Source Files\Scenes</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\shaders\basic\fs.glsl">
+      <Filter>Resource Files\shaders\basic</Filter>
+    </None>
+    <None Include="res\shaders\basic\vs.glsl">
+      <Filter>Resource Files\shaders\basic</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="MainScene.h">
+      <Filter>Header Files\Scenes</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
