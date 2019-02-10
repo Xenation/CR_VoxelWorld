@@ -15,5 +15,6 @@ private:
 	Entity* camera;
 	Entity* cube;
 	Mesh* cubeMesh;
+	Entity* worldEntity;
 };
 

@@ -25,6 +25,15 @@
     <Filter Include="Resource Files\shaders\basic">
       <UniqueIdentifier>{66705d5c-f2f3-45e5-b828-7f5f698a87a1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\World">
+      <UniqueIdentifier>{36cf864d-c4df-4b90-acfc-d700cdae1ffa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\World">
+      <UniqueIdentifier>{175df525-b9b5-4629-ba42-07c10bb13ded}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\shaders\voxels">
+      <UniqueIdentifier>{e0a92557-db06-49a9-a070-b1427e76e228}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -33,10 +42,43 @@
     <ClCompile Include="MainScene.cpp">
       <Filter>Source Files\Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="World.cpp">
+      <Filter>Source Files\World</Filter>
+    </ClCompile>
+    <ClCompile Include="Chunk.cpp">
+      <Filter>Source Files\World</Filter>
+    </ClCompile>
+    <ClCompile Include="WorldGenerator.cpp">
+      <Filter>Source Files\World</Filter>
+    </ClCompile>
+    <ClCompile Include="WorldRenderer.cpp">
+      <Filter>Source Files\World</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainScene.h">
       <Filter>Header Files\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="World.h">
+      <Filter>Header Files\World</Filter>
+    </ClInclude>
+    <ClInclude Include="Chunk.h">
+      <Filter>Header Files\World</Filter>
+    </ClInclude>
+    <ClInclude Include="Voxel.h">
+      <Filter>Header Files\World</Filter>
+    </ClInclude>
+    <ClInclude Include="VMath.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ZOrder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WorldGenerator.h">
+      <Filter>Header Files\World</Filter>
+    </ClInclude>
+    <ClInclude Include="WorldRenderer.h">
+      <Filter>Header Files\World</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -46,5 +88,16 @@
     <CopyFileToFolders Include="res\shaders\basic\vs.glsl">
       <Filter>Resource Files\shaders\basic</Filter>
     </CopyFileToFolders>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\shaders\voxels\fs.glsl">
+      <Filter>Resource Files\shaders\voxels</Filter>
+    </None>
+    <None Include="res\shaders\voxels\vs.glsl">
+      <Filter>Resource Files\shaders\voxels</Filter>
+    </None>
+    <None Include="res\shaders\voxels\gs.glsl">
+      <Filter>Resource Files\shaders\voxels</Filter>
+    </None>
   </ItemGroup>
 </Project>

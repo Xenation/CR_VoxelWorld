@@ -6,6 +6,8 @@
 #include <MeshRenderer.h>
 #include <ShaderProgram.h>
 #include <Mesh.h>
+#include "World.h"
+#include "WorldRenderer.h"
 
 
 
@@ -18,7 +20,7 @@ void MainScene::load() {
 	Scene::load();
 	camera = new Entity();
 	camera->addComponent<Camera>();
-	camera->addComponent<NoclipController>();
+	camera->addComponent<NoclipController>()->lookSensivity = 1;
 	camera->transform->setPosition({0, 0, -3});
 
 	cubeMesh = new Mesh(8, 36);
@@ -54,6 +56,11 @@ void MainScene::load() {
 	ShaderProgram::find("basic")->load();
 	cubeRend->setShaderProgram(ShaderProgram::find("basic"));
 	cubeRend->setMesh(cubeMesh);
+
+	worldEntity = new Entity();
+	World* world = worldEntity->addComponent<World>();
+	ShaderProgram::find("voxels")->load();
+	worldEntity->getComponent<WorldRenderer>()->setShaderProgram(ShaderProgram::find("voxels"));
 }
 
 void MainScene::update() {
