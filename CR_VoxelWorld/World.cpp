@@ -13,12 +13,14 @@ World::~World() {}
 
 void World::onStart() {
 	// TestGen
-	for (int z = 0; z < 4; z++) {
-		for (int x = 0; x < 4; x++) {
-			Vec3i chkPos = Vec3i(x, 0, z);
-			Chunk* chunk = generator.generateChunk(chkPos);
-			chunks[chkPos] = chunk;
-			chunk->generateMesh();
+	for (int y = 0; y < 4; y++) {
+		for (int z = 0; z < 16; z++) {
+			for (int x = 0; x < 16; x++) {
+				Vec3i chkPos = Vec3i(x, y, z);
+				Chunk* chunk = generator.generateChunk(chkPos);
+				chunks[chkPos] = chunk;
+				chunk->generateMesh();
+			}
 		}
 	}
 

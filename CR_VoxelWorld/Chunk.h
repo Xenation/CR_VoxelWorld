@@ -23,5 +23,8 @@ public:
 	Chunk(Vec3i pos);
 	Chunk(const Chunk&) = delete;
 	~Chunk();
+
+private:
+	bool hasVoxelOnSide(Vec3c voxPos, int side);
 };
 

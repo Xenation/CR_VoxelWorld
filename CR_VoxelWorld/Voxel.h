@@ -1,19 +1,32 @@
 #pragma once
 #include <XMath.h>
 #include "VMath.h"
-struct Voxel {
-	enum Type : unsigned int {
-		Air = 0,
-		Stone = 1,
-	};
+struct VoxelType {
+	static const VoxelType*const air;
+	static const VoxelType*const stone;
+	static const VoxelType*const dirt;
+	static const VoxelType*const grass;
 
+	const bool isSolid;
+	const bool isTransparent;
+	const Vec4f color;
+
+public:
+	VoxelType() = delete;
+	VoxelType(const VoxelType&) = delete;
+
+private:
+	VoxelType(bool isSolid, bool isTransparent, Vec4f color) : isSolid(isSolid), isTransparent(isTransparent), color(color) {}
+};
+
+struct Voxel {
 	Vec3c position;
-	Type type;
+	const VoxelType* type;
 
 
 public:
-	Voxel() : position(Vec3c()), type(Air) {}
-	Voxel(Vec3c pos, Type type) : position(pos), type(type) {}
+	Voxel() : position(Vec3c()), type(VoxelType::air) {}
+	Voxel(Vec3c pos, const VoxelType* type) : position(pos), type(type) {}
 	Voxel(const Voxel&) = delete;
 	~Voxel() {}
 };

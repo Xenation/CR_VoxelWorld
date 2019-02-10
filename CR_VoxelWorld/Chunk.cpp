@@ -6,37 +6,54 @@ Chunk::Chunk(Vec3i pos) : position(pos) {}
 
 Chunk::~Chunk() {}
 
-void fillCube(Vec3f* verts, int vIndex, unsigned int* indices, int iIndex, Vec3f voxPos) {
-	static Vec3f cubeVerts[8]{
-		{-0.5f, 0.5f, -0.5f},
-		{-0.5f, 0.5f, 0.5f},
-		{0.5f, 0.5f, 0.5f},
-		{0.5f, 0.5f, -0.5f},
-		{-0.5f, -0.5f, -0.5f},
-		{-0.5f, -0.5f, 0.5f},
-		{0.5f, -0.5f, 0.5f},
-		{0.5f, -0.5f, -0.5f},
-	};
-	static unsigned int cubeIndices[36]{
-		0, 2, 1,
-		0, 3, 2,
-		4, 3, 0,
-		4, 7, 3,
-		5, 0, 1,
-		5, 4, 0,
-		6, 1, 2,
-		6, 5, 1,
-		7, 2, 3,
-		7, 6, 2,
-		5, 7, 4,
-		5, 6, 7
+void fillFace(Vec3f* vertices, Vec4f* colors, int vIndex, unsigned int* indices, int iIndex, Vec3f voxPos, int side, Vec4f color) {
+	// sides: x+, x-, y+, y-, z+, z-
+
+	static Vec3f faceVertices[6][4]{
+		{
+			{1, 1, 0},
+			{1, 1, 1},
+			{1, 0, 1},
+			{1, 0, 0}
+		}, {
+			{0, 1, 1},
+			{0, 1, 0},
+			{0, 0, 0},
+			{0, 0, 1}
+		}, {
+			{0, 1, 1},
+			{1, 1, 1},
+			{1, 1, 0},
+			{0, 1, 0}
+		}, {
+			{0, 0, 0},
+			{1, 0, 0},
+			{1, 0, 1},
+			{0, 0, 1}
+		}, {
+			{1, 1, 1},
+			{0, 1, 1},
+			{0, 0, 1},
+			{1, 0, 1}
+		}, {
+			{0, 1, 0},
+			{1, 1, 0},
+			{1, 0, 0},
+			{0, 0, 0}
+		}
 	};
 
-	for (int i = 0; i < 8; i++) {
-		verts[vIndex + i] = voxPos + cubeVerts[i];
+	static unsigned int faceIndices[6]{
+		0, 3, 2,
+		0, 2, 1
+	};
+
+	for (int i = 0; i < 4; i++) {
+		vertices[vIndex + i] = voxPos + faceVertices[side][i];
+		colors[vIndex + i] = color;
 	}
-	for (int i = 0; i < 36; i++) {
-		indices[iIndex + i] = cubeIndices[i] + vIndex;
+	for (int i = 0; i < 6; i++) {
+		indices[iIndex + i] = faceIndices[i] + vIndex;
 	}
 }
 
@@ -47,34 +64,82 @@ void Chunk::generateMesh() {
 	for (int y = 0; y < CHUNK_SIZE; y++) {
 		for (int z = 0; z < CHUNK_SIZE; z++) {
 			for (int x = 0; x < CHUNK_SIZE; x++) {
-				if (voxels[zorder(Vec3c(x, y, z))].type == Voxel::Air) continue;
-				vCount += 8;
-				iCount += 36;
+				Vec3c voxelPos = Vec3c(x, y, z);
+				if (voxels[zorder(voxelPos)].type == VoxelType::air) continue;
+				for (int side = 0; side < 6; side++) {
+					if (!hasVoxelOnSide(voxelPos, side)) {
+						vCount += 4;
+						iCount += 6;
+					}
+				}
 			}
 		}
 	}
 
 	mesh = new Mesh(vCount, iCount);
-	mesh->setAttributesDefinition(1, new int {4});
+	mesh->setAttributesDefinition(2, new int[2] {4, 4});
 	
 	// Meshing pass
 	Vec3f* vertices = new Vec3f[vCount];
 	unsigned int* indices = new unsigned int[iCount];
+	Vec4f* colors = new Vec4f[vCount];
 	int vIndex = 0;
 	int iIndex = 0;
 	for (int y = 0; y < CHUNK_SIZE; y++) {
 		for (int z = 0; z < CHUNK_SIZE; z++) {
 			for (int x = 0; x < CHUNK_SIZE; x++) {
 				Vec3c voxelPos = Vec3c(x, y, z);
-				if (voxels[zorder(voxelPos)].type == Voxel::Air) continue;
-				fillCube(vertices, vIndex, indices, iIndex, Vec3f(voxelPos.x, voxelPos.y, voxelPos.z));
-				vIndex += 8;
-				iIndex += 36;
+				Voxel& voxel = voxels[zorder(voxelPos)];
+				if (voxel.type == VoxelType::air) continue;
+				for (int side = 0; side < 6; side++) {
+					if (!hasVoxelOnSide(voxelPos, side)) {
+						fillFace(vertices, colors, vIndex, indices, iIndex, Vec3f(voxelPos.x, voxelPos.y, voxelPos.z), side, voxel.type->color);
+						vIndex += 4;
+						iIndex += 6;
+					}
+				}
 			}
 		}
 	}
 
 	mesh->setAttribute(0, (float*) vertices);
+	mesh->setAttribute(1, (float*) colors);
 	mesh->setIndices(indices);
+	vertices = nullptr;
+	indices = nullptr;
 	mesh->uploadToGL();
+	mesh->deleteLocal();
+}
+
+bool Chunk::hasVoxelOnSide(Vec3c voxPos, int side) {
+	// sides: x+, x-, y+, y-, z+, z-
+
+	switch (side) {
+	case 0:
+		if (voxPos.x == CHUNK_SIZE - 1) return false;
+		return voxels[zorder(voxPos + Vec3c(1, 0, 0))].type != VoxelType::air;
+		break;
+	case 1:
+		if (voxPos.x == 0) return false;
+		return voxels[zorder(voxPos + Vec3c(-1, 0, 0))].type != VoxelType::air;
+		break;
+	case 2:
+		if (voxPos.y == CHUNK_SIZE - 1) return false;
+		return voxels[zorder(voxPos + Vec3c(0, 1, 0))].type != VoxelType::air;
+		break;
+	case 3:
+		if (voxPos.y == 0) return false;
+		return voxels[zorder(voxPos + Vec3c(0, -1, 0))].type != VoxelType::air;
+		break;
+	case 4:
+		if (voxPos.z == CHUNK_SIZE - 1) return false;
+		return voxels[zorder(voxPos + Vec3c(0, 0, 1))].type != VoxelType::air;
+		break;
+	case 5:
+		if (voxPos.z == 0) return false;
+		return voxels[zorder(voxPos + Vec3c(0, 0, -1))].type != VoxelType::air;
+		break;
+	}
+
+	return true;
 }

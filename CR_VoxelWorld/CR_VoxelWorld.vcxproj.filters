@@ -54,6 +54,9 @@
     <ClCompile Include="WorldRenderer.cpp">
       <Filter>Source Files\World</Filter>
     </ClCompile>
+    <ClCompile Include="Voxel.cpp">
+      <Filter>Source Files\World</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainScene.h">
@@ -88,16 +91,8 @@
     <CopyFileToFolders Include="res\shaders\basic\vs.glsl">
       <Filter>Resource Files\shaders\basic</Filter>
     </CopyFileToFolders>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="res\shaders\voxels\fs.glsl">
-      <Filter>Resource Files\shaders\voxels</Filter>
-    </None>
-    <None Include="res\shaders\voxels\vs.glsl">
-      <Filter>Resource Files\shaders\voxels</Filter>
-    </None>
-    <None Include="res\shaders\voxels\gs.glsl">
-      <Filter>Resource Files\shaders\voxels</Filter>
-    </None>
+    <CopyFileToFolders Include="res\shaders\voxels\fs.glsl" />
+    <CopyFileToFolders Include="res\shaders\voxels\vs.glsl" />
+    <CopyFileToFolders Include="res\shaders\voxels\gs.glsl" />
   </ItemGroup>
 </Project>
