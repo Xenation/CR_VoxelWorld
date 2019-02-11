@@ -7,6 +7,7 @@ struct VoxelType {
 	static const VoxelType*const dirt;
 	static const VoxelType*const grass;
 
+	const unsigned int id;
 	const bool isSolid;
 	const bool isTransparent;
 	const Vec4f color;
@@ -16,7 +17,7 @@ public:
 	VoxelType(const VoxelType&) = delete;
 
 private:
-	VoxelType(bool isSolid, bool isTransparent, Vec4f color) : isSolid(isSolid), isTransparent(isTransparent), color(color) {}
+	VoxelType(unsigned int id, bool isSolid, bool isTransparent, Vec4f color) : id(id), isSolid(isSolid), isTransparent(isTransparent), color(color) {}
 };
 
 struct Voxel {

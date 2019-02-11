@@ -6,7 +6,7 @@ Chunk::Chunk(Vec3i pos) : position(pos) {}
 
 Chunk::~Chunk() {}
 
-void fillFace(Vec3f* vertices, Vec4f* colors, int vIndex, unsigned int* indices, int iIndex, Vec3f voxPos, int side, Vec4f color) {
+void fillFace(Vec3f* vertices, unsigned int* types, int vIndex, unsigned int* indices, int iIndex, Vec3f voxPos, int side, unsigned int voxelType) {
 	// sides: x+, x-, y+, y-, z+, z-
 
 	static unsigned int faceIndices[6]{
@@ -16,7 +16,7 @@ void fillFace(Vec3f* vertices, Vec4f* colors, int vIndex, unsigned int* indices,
 
 	for (int i = 0; i < 4; i++) {
 		vertices[vIndex + i] = voxPos + Voxel::faceVertices[side][i];
-		colors[vIndex + i] = color;
+		types[vIndex + i] = voxelType;
 	}
 	for (int i = 0; i < 6; i++) {
 		indices[iIndex + i] = faceIndices[i] + vIndex;
@@ -43,12 +43,12 @@ void Chunk::generateMesh() {
 	}
 
 	mesh = new Mesh(vCount, iCount);
-	mesh->setAttributesDefinition(2, new int[2] {4, 4});
+	mesh->setAttributesDefinition(2, new int[2] {4, 1}, new GLenum[2] {GL_FLOAT, GL_UNSIGNED_INT});
 	
 	// Meshing pass
 	Vec3f* vertices = new Vec3f[vCount];
+	unsigned int* types = new unsigned int[vCount];
 	unsigned int* indices = new unsigned int[iCount];
-	Vec4f* colors = new Vec4f[vCount];
 	int vIndex = 0;
 	int iIndex = 0;
 	for (int y = 0; y < CHUNK_SIZE; y++) {
@@ -59,7 +59,7 @@ void Chunk::generateMesh() {
 				if (voxel.type == VoxelType::air) continue;
 				for (int side = 0; side < 6; side++) {
 					if (!hasVoxelOnSide(voxelPos, side)) {
-						fillFace(vertices, colors, vIndex, indices, iIndex, Vec3f(voxelPos.x, voxelPos.y, voxelPos.z), side, voxel.type->color);
+						fillFace(vertices, types, vIndex, indices, iIndex, Vec3f(voxelPos.x, voxelPos.y, voxelPos.z), side, voxel.type->id);
 						vIndex += 4;
 						iIndex += 6;
 					}
@@ -69,10 +69,10 @@ void Chunk::generateMesh() {
 	}
 
 	mesh->setAttribute(0, (float*) vertices);
-	mesh->setAttribute(1, (float*) colors);
+	mesh->setAttribute(1, types);
 	mesh->setIndices(indices);
-	vertices = nullptr;
-	indices = nullptr;
+	delete[] vertices;
+	delete[] types;
 	mesh->uploadToGL();
 	mesh->deleteLocal();
 }
