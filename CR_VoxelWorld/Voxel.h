@@ -20,6 +20,8 @@ private:
 };
 
 struct Voxel {
+	static const Vec3f faceVertices[6][4];
+	
 	Vec3c position;
 	const VoxelType* type;
 
@@ -30,4 +32,3 @@ public:
 	Voxel(const Voxel&) = delete;
 	~Voxel() {}
 };
-

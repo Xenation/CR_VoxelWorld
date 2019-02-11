@@ -9,47 +9,13 @@ Chunk::~Chunk() {}
 void fillFace(Vec3f* vertices, Vec4f* colors, int vIndex, unsigned int* indices, int iIndex, Vec3f voxPos, int side, Vec4f color) {
 	// sides: x+, x-, y+, y-, z+, z-
 
-	static Vec3f faceVertices[6][4]{
-		{
-			{1, 1, 0},
-			{1, 1, 1},
-			{1, 0, 1},
-			{1, 0, 0}
-		}, {
-			{0, 1, 1},
-			{0, 1, 0},
-			{0, 0, 0},
-			{0, 0, 1}
-		}, {
-			{0, 1, 1},
-			{1, 1, 1},
-			{1, 1, 0},
-			{0, 1, 0}
-		}, {
-			{0, 0, 0},
-			{1, 0, 0},
-			{1, 0, 1},
-			{0, 0, 1}
-		}, {
-			{1, 1, 1},
-			{0, 1, 1},
-			{0, 0, 1},
-			{1, 0, 1}
-		}, {
-			{0, 1, 0},
-			{1, 1, 0},
-			{1, 0, 0},
-			{0, 0, 0}
-		}
-	};
-
 	static unsigned int faceIndices[6]{
 		0, 3, 2,
 		0, 2, 1
 	};
 
 	for (int i = 0; i < 4; i++) {
-		vertices[vIndex + i] = voxPos + faceVertices[side][i];
+		vertices[vIndex + i] = voxPos + Voxel::faceVertices[side][i];
 		colors[vIndex + i] = color;
 	}
 	for (int i = 0; i < 6; i++) {
@@ -142,4 +108,10 @@ bool Chunk::hasVoxelOnSide(Vec3c voxPos, int side) {
 	}
 
 	return true;
+}
+
+void Chunk::linkAdjacentChunks() {
+	if (north == nullptr) {
+		
+	}
 }

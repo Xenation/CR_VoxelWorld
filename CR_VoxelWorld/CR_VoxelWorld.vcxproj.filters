@@ -34,6 +34,12 @@
     <Filter Include="Resource Files\shaders\voxels">
       <UniqueIdentifier>{e0a92557-db06-49a9-a070-b1427e76e228}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Components">
+      <UniqueIdentifier>{a409b2ed-86a9-4bbc-90e2-68ee741feacf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components">
+      <UniqueIdentifier>{9f0f685c-cf0f-4f27-835d-e4ff35277c09}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -56,6 +62,9 @@
     </ClCompile>
     <ClCompile Include="Voxel.cpp">
       <Filter>Source Files\World</Filter>
+    </ClCompile>
+    <ClCompile Include="BlockRaycaster.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -83,6 +92,9 @@
     <ClInclude Include="WorldRenderer.h">
       <Filter>Header Files\World</Filter>
     </ClInclude>
+    <ClInclude Include="BlockRaycaster.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CopyFileToFolders Include="res\shaders\basic\fs.glsl">
@@ -91,8 +103,14 @@
     <CopyFileToFolders Include="res\shaders\basic\vs.glsl">
       <Filter>Resource Files\shaders\basic</Filter>
     </CopyFileToFolders>
-    <CopyFileToFolders Include="res\shaders\voxels\fs.glsl" />
-    <CopyFileToFolders Include="res\shaders\voxels\vs.glsl" />
-    <CopyFileToFolders Include="res\shaders\voxels\gs.glsl" />
+    <CopyFileToFolders Include="res\shaders\voxels\fs.glsl">
+      <Filter>Resource Files\shaders\voxels</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="res\shaders\voxels\gs.glsl">
+      <Filter>Resource Files\shaders\voxels</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="res\shaders\voxels\vs.glsl">
+      <Filter>Resource Files\shaders\voxels</Filter>
+    </CopyFileToFolders>
   </ItemGroup>
 </Project>

@@ -8,10 +8,13 @@
 #define CHUNK_SIZE 32
 #define CHUNK_VOXEL_COUNT (CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE)
 
+class World;
 class Chunk {
 public:
 	Vec3i position;
 	Voxel voxels[CHUNK_VOXEL_COUNT];
+	World* world;
+	Chunk* north; Chunk* east; Chunk* south; Chunk* west; Chunk* top; Chunk* bottom;
 	Mesh* mesh;
 
 	inline Voxel& getVoxel(const Vec3c& pos) {
@@ -26,5 +29,6 @@ public:
 
 private:
 	bool hasVoxelOnSide(Vec3c voxPos, int side);
+	void linkAdjacentChunks();
 };
 

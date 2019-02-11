@@ -142,6 +142,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BlockRaycaster.cpp" />
     <ClCompile Include="Chunk.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainScene.cpp" />
@@ -157,6 +158,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BlockRaycaster.h" />
     <ClInclude Include="Chunk.h" />
     <ClInclude Include="MainScene.h" />
     <ClInclude Include="VMath.h" />

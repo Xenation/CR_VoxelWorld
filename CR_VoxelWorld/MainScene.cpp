@@ -8,6 +8,7 @@
 #include <Mesh.h>
 #include "World.h"
 #include "WorldRenderer.h"
+#include "BlockRaycaster.h"
 
 
 
@@ -21,6 +22,7 @@ void MainScene::load() {
 	camera = new Entity();
 	camera->addComponent<Camera>();
 	camera->addComponent<NoclipController>()->lookSensivity = 1;
+	BlockRaycaster* br = camera->addComponent<BlockRaycaster>();
 	camera->transform->setPosition({0, 0, -3});
 
 	cubeMesh = new Mesh(8, 36);
@@ -61,6 +63,9 @@ void MainScene::load() {
 	World* world = worldEntity->addComponent<World>();
 	ShaderProgram::find("voxels")->load();
 	worldEntity->getComponent<WorldRenderer>()->setShaderProgram(ShaderProgram::find("voxels"));
+
+	br->world = world;
+	br->debugEntity = cube;
 }
 
 void MainScene::update() {
