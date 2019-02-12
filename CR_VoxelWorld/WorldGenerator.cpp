@@ -8,7 +8,7 @@
 
 
 
-WorldGenerator::WorldGenerator(unsigned int seed) : seed(seed) {}
+WorldGenerator::WorldGenerator(World* world, unsigned int seed) : world(world), seed(seed) {}
 
 WorldGenerator::~WorldGenerator() {}
 
@@ -22,14 +22,15 @@ Chunk* WorldGenerator::generateChunk(Vec3i chkPos) {
 			for (int x = 0; x < noiseGridRes; x++) {
 				Vec3f worldPos = Vec3f(chkPos.x * CHUNK_SIZE + x * noiseGridCellSize, chkPos.y * CHUNK_SIZE + y * noiseGridCellSize, chkPos.z * CHUNK_SIZE + z * noiseGridCellSize);
 				float noise = perlinf(worldPos.x * 0.05f, worldPos.y * 0.05f, worldPos.z * 0.05f);
-				noise -= (worldPos.y - 24.0f) / 12.0f;
-				noise += (perlinf(worldPos.x * 0.01f, worldPos.y * 0.01f, worldPos.z * 0.01f) * 0.5f + 0.5f) * ((worldPos.y - 24.0f) / 11.0f);
+				float interpHeight = (perlinf(worldPos.x * 0.003f, 0, worldPos.z * 0.003f) * 0.5f + 0.5f) * 32.0f;
+				noise -= (worldPos.y - interpHeight) / (interpHeight * 0.5f);
+				noise += (perlinf(worldPos.x * 0.003f, worldPos.y * 0.003f, worldPos.z * 0.003f) * 0.5f + 0.5f) * ((worldPos.y - interpHeight) / (interpHeight * 0.45f));
 				noiseMap[x][y][z] = noise;
 			}
 		}
 	}
 
-	Chunk* chunk = new Chunk(chkPos);
+	Chunk* chunk = new Chunk(chkPos, world);
 	for (int y = 0; y < CHUNK_SIZE; y++) {
 		for (int z = 0; z < CHUNK_SIZE; z++) {
 			for (int x = 0; x < CHUNK_SIZE; x++) {
@@ -55,14 +56,20 @@ Chunk* WorldGenerator::generateChunk(Vec3i chkPos) {
 		}
 	}
 
+	int localWaterLevel = 16 - chkPos.y * CHUNK_SIZE;
+
 	// Lay grass
 	for (int z = 0; z < CHUNK_SIZE; z++) {
 		for (int x = 0; x < CHUNK_SIZE; x++) {
 			for (int y = CHUNK_SIZE - 1; y > 0; y--) {
 				Voxel& voxel = chunk->voxels[zorder(Vec3c(x, y, z))];
 				Voxel& botVoxel = chunk->voxels[zorder(Vec3c(x, y - 1, z))];
-				if (voxel.type == VoxelType::air && botVoxel.type != VoxelType::air) {
-					botVoxel.type = VoxelType::grass;
+				if (voxel.type == VoxelType::air && botVoxel.type == VoxelType::stone) {
+					if (y <= localWaterLevel) {
+						botVoxel.type = VoxelType::dirt;
+					} else {
+						botVoxel.type = VoxelType::grass;
+					}
 					int yd = y - 2;
 					for (; yd > 0 && yd > y - 5; yd--) {
 						Voxel& dirtVoxel = chunk->voxels[zorder(Vec3c(x, yd, z))];
@@ -70,6 +77,18 @@ Chunk* WorldGenerator::generateChunk(Vec3i chkPos) {
 						dirtVoxel.type = VoxelType::dirt;
 					}
 					y = yd + 1;
+				}
+			}
+		}
+	}
+
+	// Ocean
+	for (int z = 0; z < CHUNK_SIZE; z++) {
+		for (int x = 0; x < CHUNK_SIZE; x++) {
+			for (int y = localWaterLevel; y > 0; y--) {
+				Voxel& voxel = chunk->voxels[zorder(Vec3c(x, y, z))];
+				if (voxel.type == VoxelType::air) {
+					voxel.type = VoxelType::water;
 				}
 			}
 		}

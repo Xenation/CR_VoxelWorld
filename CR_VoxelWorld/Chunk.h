@@ -23,7 +23,7 @@ public:
 
 	void generateMesh();
 
-	Chunk(Vec3i pos);
+	Chunk(Vec3i pos, World* world);
 	Chunk(const Chunk&) = delete;
 	~Chunk();
 

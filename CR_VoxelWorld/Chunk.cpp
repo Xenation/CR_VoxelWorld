@@ -1,8 +1,12 @@
 #include "Chunk.h"
 
+#include "World.h"
 
 
-Chunk::Chunk(Vec3i pos) : position(pos) {}
+
+Chunk::Chunk(Vec3i pos, World* world) : position(pos), world(world) {
+	linkAdjacentChunks();
+}
 
 Chunk::~Chunk() {}
 
@@ -27,6 +31,7 @@ void Chunk::generateMesh() {
 	// Counting pass
 	int vCount = 0;
 	int iCount = 0;
+
 	for (int y = 0; y < CHUNK_SIZE; y++) {
 		for (int z = 0; z < CHUNK_SIZE; z++) {
 			for (int x = 0; x < CHUNK_SIZE; x++) {
@@ -82,27 +87,63 @@ bool Chunk::hasVoxelOnSide(Vec3c voxPos, int side) {
 
 	switch (side) {
 	case 0:
-		if (voxPos.x == CHUNK_SIZE - 1) return false;
+		if (voxPos.x == CHUNK_SIZE - 1) {
+			if (east != nullptr) {
+				return east->voxels[zorder(Vec3c(0, voxPos.y, voxPos.z))].type != VoxelType::air;
+			} else {
+				return false;
+			}
+		}
 		return voxels[zorder(voxPos + Vec3c(1, 0, 0))].type != VoxelType::air;
 		break;
 	case 1:
-		if (voxPos.x == 0) return false;
+		if (voxPos.x == 0) {
+			if (west != nullptr) {
+				return west->voxels[zorder(Vec3c(CHUNK_SIZE - 1, voxPos.y, voxPos.z))].type != VoxelType::air;
+			} else {
+				return false;
+			}
+		}
 		return voxels[zorder(voxPos + Vec3c(-1, 0, 0))].type != VoxelType::air;
 		break;
 	case 2:
-		if (voxPos.y == CHUNK_SIZE - 1) return false;
+		if (voxPos.y == CHUNK_SIZE - 1) {
+			if (top != nullptr) {
+				return top->voxels[zorder(Vec3c(voxPos.x, 0, voxPos.z))].type != VoxelType::air;
+			} else {
+				return false;
+			}
+		}
 		return voxels[zorder(voxPos + Vec3c(0, 1, 0))].type != VoxelType::air;
 		break;
 	case 3:
-		if (voxPos.y == 0) return false;
+		if (voxPos.y == 0) {
+			if (bottom != nullptr) {
+				return bottom->voxels[zorder(Vec3c(voxPos.x, CHUNK_SIZE - 1, voxPos.z))].type != VoxelType::air;
+			} else {
+				return false;
+			}
+		}
 		return voxels[zorder(voxPos + Vec3c(0, -1, 0))].type != VoxelType::air;
 		break;
 	case 4:
-		if (voxPos.z == CHUNK_SIZE - 1) return false;
+		if (voxPos.z == CHUNK_SIZE - 1) {
+			if (north != nullptr) {
+				return north->voxels[zorder(Vec3c(voxPos.x, voxPos.y, 0))].type != VoxelType::air;
+			} else {
+				return false;
+			}
+		}
 		return voxels[zorder(voxPos + Vec3c(0, 0, 1))].type != VoxelType::air;
 		break;
 	case 5:
-		if (voxPos.z == 0) return false;
+		if (voxPos.z == 0) {
+			if (south != nullptr) {
+				return south->voxels[zorder(Vec3c(voxPos.x, voxPos.y, CHUNK_SIZE - 1))].type != VoxelType::air;
+			} else {
+				return false;
+			}
+		}
 		return voxels[zorder(voxPos + Vec3c(0, 0, -1))].type != VoxelType::air;
 		break;
 	}
@@ -112,6 +153,39 @@ bool Chunk::hasVoxelOnSide(Vec3c voxPos, int side) {
 
 void Chunk::linkAdjacentChunks() {
 	if (north == nullptr) {
-		
+		north = world->getChunkAt(position + Vec3i::north);
+		if (north != nullptr) {
+			north->south = this;
+		}
+	}
+	if (east == nullptr) {
+		east = world->getChunkAt(position + Vec3i::east);
+		if (east != nullptr) {
+			east->west = this;
+		}
+	}
+	if (south == nullptr) {
+		south = world->getChunkAt(position + Vec3i::south);
+		if (south != nullptr) {
+			south->north = this;
+		}
+	}
+	if (west == nullptr) {
+		west = world->getChunkAt(position + Vec3i::west);
+		if (west != nullptr) {
+			west->east = this;
+		}
+	}
+	if (top == nullptr) {
+		top = world->getChunkAt(position + Vec3i::up);
+		if (top != nullptr) {
+			top->bottom = this;
+		}
+	}
+	if (bottom == nullptr) {
+		bottom = world->getChunkAt(position + Vec3i::down);
+		if (bottom != nullptr) {
+			bottom->top = this;
+		}
 	}
 }

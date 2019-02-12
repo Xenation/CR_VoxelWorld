@@ -6,6 +6,7 @@ struct VoxelType {
 	static const VoxelType*const stone;
 	static const VoxelType*const dirt;
 	static const VoxelType*const grass;
+	static const VoxelType*const water;
 
 	const unsigned int id;
 	const bool isSolid;

@@ -7,7 +7,7 @@
 
 
 
-World::World(Entity* entity) : Component(entity), generator(8) {}
+World::World(Entity* entity) : Component(entity), generator(this, 8) {}
 
 World::~World() {}
 
@@ -20,10 +20,20 @@ void World::onStart() {
 				Vec3i chkPos = Vec3i(x, y, z);
 				Chunk* chunk = generator.generateChunk(chkPos);
 				chunks[chkPos] = chunk;
+			}
+		}
+	}
+
+	for (int y = 0; y < 4; y++) {
+		for (int z = 0; z < 16; z++) {
+			for (int x = 0; x < 16; x++) {
+				Chunk* chunk = getChunkAt(Vec3i(x, y, z));
+				if (chunk == nullptr) continue;
 				chunk->generateMesh();
 			}
 		}
 	}
+	
 
 	WorldRenderer* renderer = entity->addComponent<WorldRenderer>();
 	renderer->world = this;

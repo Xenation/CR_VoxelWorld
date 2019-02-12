@@ -10,11 +10,12 @@ uniform mat4x4 modelMatrix;
 out vec4 worldPos;
 out vec4 vColor;
 
-const vec4 typeColors[4] = vec4[](
+const vec4 typeColors[5] = vec4[](
 	vec4(0, 0, 0, 0),
 	vec4(0.631, 0.631, 0.631, 1.0),
-	vec4(0.66, 0.40, 0.21, 1.0),
-	vec4(0.454, 0.717, 0.341, 1.0)
+	vec4(0.660, 0.400, 0.210, 1.0),
+	vec4(0.454, 0.717, 0.341, 1.0),
+	vec4(0.223, 0.356, 0.917, 1.0)
 );
 
 void main() {
