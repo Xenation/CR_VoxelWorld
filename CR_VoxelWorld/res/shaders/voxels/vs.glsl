@@ -21,5 +21,8 @@ const vec4 typeColors[5] = vec4[](
 void main() {
 	vColor = typeColors[voxelType];
 	worldPos = modelMatrix * vec4(vertexPos.xyz, 1.0);
+	if (voxelType == 4) {
+		worldPos.y -= 0.1;
+	}
 	gl_Position = projectionMatrix * viewMatrix * worldPos;
 }
