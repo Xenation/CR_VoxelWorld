@@ -149,6 +149,7 @@
     <ClCompile Include="Voxel.cpp" />
     <ClCompile Include="World.cpp" />
     <ClCompile Include="WorldGenerator.cpp" />
+    <ClCompile Include="WorldMesher.cpp" />
     <ClCompile Include="WorldRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -165,6 +166,7 @@
     <ClInclude Include="Voxel.h" />
     <ClInclude Include="World.h" />
     <ClInclude Include="WorldGenerator.h" />
+    <ClInclude Include="WorldMesher.h" />
     <ClInclude Include="WorldRenderer.h" />
     <ClInclude Include="ZOrder.h" />
   </ItemGroup>

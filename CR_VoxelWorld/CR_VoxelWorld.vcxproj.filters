@@ -63,8 +63,11 @@
     <ClCompile Include="Voxel.cpp">
       <Filter>Source Files\World</Filter>
     </ClCompile>
+    <ClCompile Include="WorldMesher.cpp">
+      <Filter>Source Files\World</Filter>
+    </ClCompile>
     <ClCompile Include="BlockRaycaster.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -92,8 +95,11 @@
     <ClInclude Include="WorldRenderer.h">
       <Filter>Header Files\World</Filter>
     </ClInclude>
+    <ClInclude Include="WorldMesher.h">
+      <Filter>Header Files\World</Filter>
+    </ClInclude>
     <ClInclude Include="BlockRaycaster.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -4,6 +4,7 @@
 #include <Component.h>
 #include "VMath.h"
 #include "WorldGenerator.h"
+#include "WorldMesher.h"
 #include "Voxel.h"
 class Chunk;
 class World : public Component {
@@ -19,9 +20,12 @@ public:
 
 	Chunk* getChunkAt(const Vec3i& chkPos);
 	Voxel* getVoxelAt(const Vec3i& voxPos);
-	bool raycast(const Ray& ray, float distance, Vec3f& intersect);
+	Voxel* getVoxelAt(const Vec3i& voxPos, Chunk*& chunk);
+	bool raycast(const Ray& ray, float distance, Vec3f& intersect, Voxel*& intersectVoxel, Chunk*& intersectChunk);
+	void remeshChunk(Chunk* chunk);
 
 private:
 	WorldGenerator generator;
+	WorldMesher mesher;
 };
 
