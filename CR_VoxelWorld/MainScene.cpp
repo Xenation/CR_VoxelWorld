@@ -61,8 +61,6 @@ void MainScene::load() {
 
 	worldEntity = new Entity();
 	World* world = worldEntity->addComponent<World>();
-	ShaderProgram::find("voxels")->load();
-	worldEntity->getComponent<WorldRenderer>()->setShaderProgram(ShaderProgram::find("voxels"));
 
 	br->world = world;
 	br->debugEntity = cube;

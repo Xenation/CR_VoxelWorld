@@ -2,12 +2,13 @@
 
 #include <string>
 #include <Entity.h>
+#include <ShaderProgram.h>
 #include "WorldRenderer.h"
 #include "Chunk.h"
 
 
 
-World::World(Entity* entity) : Component(entity), generator(this, 8) {}
+World::World(Entity* entity) : Component(entity), generator(this, 8), mesher(this) {}
 
 World::~World() {}
 
@@ -29,14 +30,21 @@ void World::onStart() {
 			for (int x = 0; x < 16; x++) {
 				Chunk* chunk = getChunkAt(Vec3i(x, y, z));
 				if (chunk == nullptr) continue;
-				chunk->generateMesh();
+				mesher.processChunk(chunk);
 			}
 		}
 	}
 	
 
-	WorldRenderer* renderer = entity->addComponent<WorldRenderer>();
-	renderer->world = this;
+	ShaderProgram* voxelsShader = ShaderProgram::find("voxels");
+	voxelsShader->load();
+	WorldRenderer* opaqueRenderer = entity->addComponent<WorldRenderer>();
+	opaqueRenderer->world = this;
+	opaqueRenderer->setShaderProgram(voxelsShader);
+	WorldRenderer* transparentRenderer = entity->addComponent<WorldRenderer>();
+	transparentRenderer->isTransparent = true;
+	transparentRenderer->world = this;
+	transparentRenderer->setShaderProgram(voxelsShader);
 }
 
 void World::onDestroy() {
@@ -55,6 +63,11 @@ Chunk* World::getChunkAt(const Vec3i& chkPos) {
 }
 
 Voxel* World::getVoxelAt(const Vec3i& voxPos) {
+	Chunk* chk;
+	return getVoxelAt(voxPos, chk);
+}
+
+Voxel* World::getVoxelAt(const Vec3i& voxPos, Chunk*& chunk) {
 	Vec3i chkPos = voxPos / CHUNK_SIZE;
 	if (voxPos.x < 0) {
 		chkPos.x--;
@@ -65,7 +78,7 @@ Voxel* World::getVoxelAt(const Vec3i& voxPos) {
 	if (voxPos.z < 0) {
 		chkPos.z--;
 	}
-	Chunk* chunk = getChunkAt(chkPos);
+	chunk = getChunkAt(chkPos);
 	if (chunk == nullptr) return nullptr;
 	Vec3c relativePos = Vec3c(voxPos.x - chkPos.x * CHUNK_SIZE, voxPos.y - chkPos.y * CHUNK_SIZE, voxPos.z - chkPos.z * CHUNK_SIZE);
 	return &chunk->voxels[zorder(relativePos)];
@@ -78,7 +91,7 @@ inline bool raycastVoxel(const Vec3f& worldPos, const Ray& ray, Vec3f& intersect
 	return false;
 }
 
-bool World::raycast(const Ray& ray, float distance, Vec3f& intersect) {
+bool World::raycast(const Ray& ray, float distance, Vec3f& intersect, Voxel*& intersectVoxel, Chunk*& intersectChunk) {
 	Vec3i min = ray.origin.floor();
 	Vec3i max = (ray.origin + ray.direction * distance).floor();
 	swapToMinMax(min, max);
@@ -88,7 +101,7 @@ bool World::raycast(const Ray& ray, float distance, Vec3f& intersect) {
 		for (int y = min.y; y <= max.y; y++) {
 			for (int z = min.z; z <= max.z; z++) {
 				Vec3i voxPos = Vec3i(x, y, z);
-				Voxel* voxel = getVoxelAt(voxPos);
+				Voxel* voxel = getVoxelAt(voxPos, intersectChunk);
 				if (voxel == nullptr || voxel->type == VoxelType::air) continue;
 				Vec3f voxIntersect;
 				float dist;
@@ -97,10 +110,15 @@ bool World::raycast(const Ray& ray, float distance, Vec3f& intersect) {
 						minDist = dist;
 						intersect = voxIntersect;
 						hasIntersected = true;
+						intersectVoxel = voxel;
 					}
 				}
 			}
 		}
 	}
 	return hasIntersected;
+}
+
+void World::remeshChunk(Chunk* chunk) {
+	mesher.processChunk(chunk);
 }

@@ -15,20 +15,18 @@ public:
 	Voxel voxels[CHUNK_VOXEL_COUNT];
 	World* world;
 	Chunk* north; Chunk* east; Chunk* south; Chunk* west; Chunk* top; Chunk* bottom;
-	Mesh* mesh;
+	Mesh* opaqueMesh = nullptr;
+	Mesh* transparentMesh = nullptr;
 
 	inline Voxel& getVoxel(const Vec3c& pos) {
 		return voxels[zorder(pos)];
 	}
-
-	void generateMesh();
 
 	Chunk(Vec3i pos, World* world);
 	Chunk(const Chunk&) = delete;
 	~Chunk();
 
 private:
-	bool hasVoxelOnSide(Vec3c voxPos, int side);
 	void linkAdjacentChunks();
 };
 
