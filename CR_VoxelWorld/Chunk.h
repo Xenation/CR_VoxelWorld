@@ -1,8 +1,8 @@
 #pragma once
 #include <XMath.h>
 #include <Mesh.h>
+#include "VZOrder.h"
 #include "Voxel.h"
-#include "ZOrder.h"
 
 // Size must be a power of 2
 #define CHUNK_SIZE 32

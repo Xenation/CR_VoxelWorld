@@ -70,22 +70,22 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>CleanRender/CleanRender/include;CleanRender/CleanRender;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <IncludePath>CleanRender/CleanRender/ext;CleanRender/CleanRender;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
     <OutDir>$(SolutionDir)Bin\$(ProjectName)\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)Obj\$(ProjectName)\$(Configuration)\$(Platform)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>CleanRender/CleanRender/include;CleanRender/CleanRender;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <IncludePath>CleanRender/CleanRender/ext;CleanRender/CleanRender;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
     <OutDir>$(SolutionDir)Bin\$(ProjectName)\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)Obj\$(ProjectName)\$(Configuration)\$(Platform)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>CleanRender/CleanRender/include;CleanRender/CleanRender;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <IncludePath>CleanRender/CleanRender/ext;CleanRender/CleanRender;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
     <OutDir>$(SolutionDir)Bin\$(ProjectName)\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)Obj\$(ProjectName)\$(Configuration)\$(Platform)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>CleanRender/CleanRender/include;CleanRender/CleanRender;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <IncludePath>CleanRender/CleanRender/ext;CleanRender/CleanRender;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
     <OutDir>$(SolutionDir)Bin\$(ProjectName)\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)Obj\$(ProjectName)\$(Configuration)\$(Platform)\</IntDir>
   </PropertyGroup>
@@ -163,10 +163,10 @@
     <ClInclude Include="MainScene.h" />
     <ClInclude Include="VMath.h" />
     <ClInclude Include="Voxel.h" />
+    <ClInclude Include="VZOrder.h" />
     <ClInclude Include="World.h" />
     <ClInclude Include="WorldGenerator.h" />
     <ClInclude Include="WorldRenderer.h" />
-    <ClInclude Include="ZOrder.h" />
   </ItemGroup>
   <ItemGroup>
     <CopyFileToFolders Include="res\shaders\basic\fs.glsl">

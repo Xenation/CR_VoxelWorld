@@ -1,6 +1,7 @@
 #pragma once
 #include <unordered_map>
 #include <XMath.h>
+#include <XMathHash.h>
 #include <Component.h>
 #include "VMath.h"
 #include "WorldGenerator.h"

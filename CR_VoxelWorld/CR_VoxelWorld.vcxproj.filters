@@ -83,9 +83,6 @@
     <ClInclude Include="VMath.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ZOrder.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="WorldGenerator.h">
       <Filter>Header Files\World</Filter>
     </ClInclude>
@@ -93,6 +90,9 @@
       <Filter>Header Files\World</Filter>
     </ClInclude>
     <ClInclude Include="BlockRaycaster.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VZOrder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
