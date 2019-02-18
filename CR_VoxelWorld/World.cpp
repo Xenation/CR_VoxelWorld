@@ -3,6 +3,7 @@
 #include <string>
 #include <Entity.h>
 #include <ShaderProgram.h>
+#include <Transform.h>
 #include "WorldRenderer.h"
 #include "Chunk.h"
 
@@ -14,28 +15,6 @@ World::~World() {}
 
 
 void World::onStart() {
-	// TestGen
-	for (int y = 0; y < 4; y++) {
-		for (int z = 0; z < 16; z++) {
-			for (int x = 0; x < 16; x++) {
-				Vec3i chkPos = Vec3i(x, y, z);
-				Chunk* chunk = generator.generateChunk(chkPos);
-				chunks[chkPos] = chunk;
-			}
-		}
-	}
-
-	for (int y = 0; y < 4; y++) {
-		for (int z = 0; z < 16; z++) {
-			for (int x = 0; x < 16; x++) {
-				Chunk* chunk = getChunkAt(Vec3i(x, y, z));
-				if (chunk == nullptr) continue;
-				mesher.processChunk(chunk);
-			}
-		}
-	}
-	
-
 	ShaderProgram* voxelsShader = ShaderProgram::find("voxels");
 	voxelsShader->load();
 	WorldRenderer* opaqueRenderer = entity->addComponent<WorldRenderer>();
@@ -45,6 +24,57 @@ void World::onStart() {
 	transparentRenderer->isTransparent = true;
 	transparentRenderer->world = this;
 	transparentRenderer->setShaderProgram(voxelsShader);
+}
+
+void World::onUpdate() {
+	if (viewer == nullptr) return;
+	Vec3i viewerChunkPos = toVec3i(viewer->getWorldPosition() / CHUNK_SIZE);
+	int sqrViewDistance = viewDistance * viewDistance;
+	// Check for chunks to delete
+	SimpleList<Vec3i> toRemove(4, 4);
+	for (std::pair<Vec3i, Chunk*> pair : chunks) {
+		Vec3i toChunk = pair.first - viewerChunkPos;
+		int sqrDistance = toChunk.x * toChunk.x + toChunk.y * toChunk.y + toChunk.z * toChunk.z;
+		if (sqrDistance > sqrViewDistance) {
+			delete pair.second;
+			toRemove.add(pair.first);
+		}
+	}
+	for (unsigned int i = 0; i < toRemove.count; i++) {
+		chunks.erase(toRemove[i]);
+	}
+
+	// Check for chunk to generate
+	Vec3i genMin = viewerChunkPos - Vec3i(generationDistance, generationDistance, generationDistance);
+	Vec3i genMax = viewerChunkPos + Vec3i(generationDistance, generationDistance, generationDistance);
+	for (int y = genMin.y; y <= genMax.y; y++) {
+		for (int z = genMin.z; z <= genMax.z; z++) {
+			for (int x = genMin.x; x <= genMax.x; x++) {
+				Vec3i chkPos = Vec3i(x, y, z);
+				Vec3i toChunk = chkPos - viewerChunkPos;
+				if (toChunk.x * toChunk.x + toChunk.y * toChunk.y + toChunk.z * toChunk.z > sqrViewDistance) continue;
+				if (getChunkAt(chkPos) == nullptr) {
+					Chunk* chunk = generator.generateChunk(chkPos);
+					chunks[chkPos] = chunk;
+				}
+			}
+		}
+	}
+
+	Vec3i meshingMin = viewerChunkPos - Vec3i(viewDistance, viewDistance, viewDistance);
+	Vec3i meshingMax = viewerChunkPos + Vec3i(viewDistance, viewDistance, viewDistance);
+	for (int y = meshingMin.y; y <= meshingMax.y; y++) {
+		for (int z = meshingMin.z; z <= meshingMax.z; z++) {
+			for (int x = meshingMin.x; x <= meshingMax.x; x++) {
+				Vec3i chkPos = Vec3i(x, y, z);
+				Vec3i toChunk = chkPos - viewerChunkPos;
+				if (toChunk.x * toChunk.x + toChunk.y * toChunk.y + toChunk.z * toChunk.z > sqrViewDistance) continue;
+				Chunk* chunk = getChunkAt(chkPos);
+				if (chunk == nullptr || chunk->meshed) continue;
+				mesher.processChunk(chunk);
+			}
+		}
+	}
 }
 
 void World::onDestroy() {

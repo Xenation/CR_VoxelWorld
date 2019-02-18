@@ -8,7 +8,9 @@ Chunk::Chunk(Vec3i pos, World* world) : position(pos), world(world) {
 	linkAdjacentChunks();
 }
 
-Chunk::~Chunk() {}
+Chunk::~Chunk() {
+	unlinkAdjacentChunks();
+}
 
 
 void Chunk::linkAdjacentChunks() {
@@ -47,5 +49,26 @@ void Chunk::linkAdjacentChunks() {
 		if (bottom != nullptr) {
 			bottom->top = this;
 		}
+	}
+}
+
+void Chunk::unlinkAdjacentChunks() {
+	if (north != nullptr) {
+		north->south = nullptr;
+	}
+	if (east != nullptr) {
+		east->west = nullptr;
+	}
+	if (south != nullptr) {
+		south->north = nullptr;
+	}
+	if (west != nullptr) {
+		west->east = nullptr;
+	}
+	if (top != nullptr) {
+		top->bottom = nullptr;
+	}
+	if (bottom != nullptr) {
+		bottom->top = nullptr;
 	}
 }

@@ -81,7 +81,7 @@ Chunk* WorldGenerator::generateChunk(Vec3i chkPos) {
 	// Ocean
 	for (int z = 0; z < CHUNK_SIZE; z++) {
 		for (int x = 0; x < CHUNK_SIZE; x++) {
-			for (int y = localWaterLevel; y > 0; y--) {
+			for (int y = localWaterLevel; y > 0 && y < CHUNK_SIZE; y--) {
 				Voxel& voxel = chunk->voxels[zorder(Vec3c(x, y, z))];
 				if (voxel.type == VoxelType::air) {
 					voxel.type = VoxelType::water;

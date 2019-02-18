@@ -7,16 +7,21 @@
 #include "WorldGenerator.h"
 #include "WorldMesher.h"
 #include "Voxel.h"
+class Transform;
 class Chunk;
 class World : public Component {
 public:
 	std::unordered_map<Vec3i, Chunk*, Vec3iHash> chunks;
+	Transform* viewer;
+	unsigned int generationDistance = 8;
+	unsigned int viewDistance = 7;
 
 	World(Entity* entity);
 	World(const World&) = delete;
 	~World();
 
 	virtual void onStart() override;
+	virtual void onUpdate() override;
 	virtual void onDestroy() override;
 
 	Chunk* getChunkAt(const Vec3i& chkPos);

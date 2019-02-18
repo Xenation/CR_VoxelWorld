@@ -23,7 +23,7 @@ void MainScene::load() {
 	camera->addComponent<Camera>();
 	camera->addComponent<NoclipController>()->lookSensivity = 1;
 	BlockRaycaster* br = camera->addComponent<BlockRaycaster>();
-	camera->transform->setPosition({0, 0, -3});
+	camera->transform->setPosition({16, 32, 16});
 
 	cubeMesh = new Mesh(8, 36);
 	cubeMesh->setAttributesDefinition(1, new int[1]{3});
@@ -61,6 +61,7 @@ void MainScene::load() {
 
 	worldEntity = new Entity("World");
 	World* world = worldEntity->addComponent<World>();
+	world->viewer = camera->transform;
 
 	br->world = world;
 	br->debugEntity = cube;

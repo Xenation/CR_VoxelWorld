@@ -2,9 +2,9 @@
 struct Vec3c {
 	union {
 		struct {
-			char x, y, z;
+			unsigned char x, y, z;
 		};
-		char data[3];
+		unsigned char data[3];
 	};
 public:
 	Vec3c() : x(0), y(0), z(0) {}
@@ -55,10 +55,10 @@ public:
 		return x != o.x || y != o.y || z != o.z;
 	}
 
-	inline const char& operator[](int index) const {
+	inline const unsigned char& operator[](int index) const {
 		return data[index];
 	}
-	inline char& operator[](int index) {
+	inline unsigned char& operator[](int index) {
 		return data[index];
 	}
 };

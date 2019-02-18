@@ -14,9 +14,10 @@ public:
 	Vec3i position;
 	Voxel voxels[CHUNK_VOXEL_COUNT];
 	World* world;
-	Chunk* north; Chunk* east; Chunk* south; Chunk* west; Chunk* top; Chunk* bottom;
+	Chunk* north = nullptr; Chunk* east = nullptr; Chunk* south = nullptr; Chunk* west = nullptr; Chunk* top = nullptr; Chunk* bottom = nullptr;
 	Mesh* opaqueMesh = nullptr;
 	Mesh* transparentMesh = nullptr;
+	bool meshed = false;
 
 	inline Voxel& getVoxel(const Vec3c& pos) {
 		return voxels[zorder(pos)];
@@ -28,5 +29,6 @@ public:
 
 private:
 	void linkAdjacentChunks();
+	void unlinkAdjacentChunks();
 };
 

@@ -1,5 +1,6 @@
 #include "WorldMesher.h"
 
+#include <string>
 #include <Debug.h>
 #include "World.h"
 #include "Chunk.h"
@@ -32,6 +33,8 @@ void fillFace(Vec3f* vertices, unsigned int* types, int vIndex, unsigned int* in
 }
 
 void WorldMesher::processChunk(Chunk* chunk) {
+	if (chunk->north == nullptr || chunk->east == nullptr || chunk->south == nullptr || chunk->west == nullptr || chunk->top == nullptr || chunk->bottom == nullptr) return;
+
 	// Counting pass
 	int opaqueVertexCount = 0;
 	int opaqueIndexCount = 0;
@@ -62,81 +65,84 @@ void WorldMesher::processChunk(Chunk* chunk) {
 			}
 		}
 	}
-	if (transparentVertexCount == 0 && opaqueVertexCount == 0) return;
 
-	// Meshing pass
-	Vec3f* opaqueVertices = nullptr;
-	unsigned int* opaqueTypes = nullptr;
-	unsigned int* opaqueIndices = nullptr;
-	int opaqueVerticesIndex = 0;
-	int opaqueIndicesIndex = 0;
-	if (opaqueVertexCount != 0) {
-		opaqueVertices = new Vec3f[opaqueVertexCount];
-		opaqueTypes = new unsigned int[opaqueVertexCount];
-		opaqueIndices = new unsigned int[opaqueIndexCount];
-		chunk->opaqueMesh = new Mesh(opaqueVertexCount, opaqueIndexCount);
-		chunk->opaqueMesh->setAttributesDefinition(2, new int[2]{3, 1}, new GLenum[2]{GL_FLOAT, GL_UNSIGNED_INT});
-	}
-	Vec3f* transparentVertices = nullptr;
-	unsigned int* transparentTypes = nullptr;
-	unsigned int* transparentIndices = nullptr;
-	int transparentVerticesIndex = 0;
-	int transparentIndicesIndex = 0;
-	if (transparentVertexCount != 0) {
-		transparentVertices = new Vec3f[transparentVertexCount];
-		transparentTypes = new unsigned int[transparentVertexCount];
-		transparentIndices = new unsigned int[transparentIndexCount];
-		chunk->transparentMesh = new Mesh(transparentVertexCount, transparentIndexCount);
-		chunk->transparentMesh->setAttributesDefinition(2, new int[2]{3, 1}, new GLenum[2]{GL_FLOAT, GL_UNSIGNED_INT});
-	}
-	for (int y = 0; y < CHUNK_SIZE; y++) {
-		for (int z = 0; z < CHUNK_SIZE; z++) {
-			for (int x = 0; x < CHUNK_SIZE; x++) {
-				Vec3c voxelPos = Vec3c(x, y, z);
-				Voxel& voxel = chunk->voxels[zorder(voxelPos)];
-				if (voxel.type == VoxelType::air) continue;
-				if (voxel.type->isTransparent) {
-					if (transparentVertexCount == 0) continue;
-					for (int side = 0; side < 6; side++) {
-						if (hasVisibleSideTransparent(chunk, voxelPos, voxel.type, side)) {
-							fillFace(transparentVertices, transparentTypes, transparentVerticesIndex, transparentIndices, transparentIndicesIndex, Vec3f(voxelPos.x, voxelPos.y, voxelPos.z), side, voxel.type->id);
-							transparentVerticesIndex += 4;
-							transparentIndicesIndex += 6;
+	if (transparentVertexCount != 0 || opaqueVertexCount != 0) {
+		// Meshing pass
+		Vec3f* opaqueVertices = nullptr;
+		unsigned int* opaqueTypes = nullptr;
+		unsigned int* opaqueIndices = nullptr;
+		int opaqueVerticesIndex = 0;
+		int opaqueIndicesIndex = 0;
+		if (opaqueVertexCount != 0) {
+			opaqueVertices = new Vec3f[opaqueVertexCount];
+			opaqueTypes = new unsigned int[opaqueVertexCount];
+			opaqueIndices = new unsigned int[opaqueIndexCount];
+			chunk->opaqueMesh = new Mesh(opaqueVertexCount, opaqueIndexCount);
+			chunk->opaqueMesh->setAttributesDefinition(2, new int[2]{3, 1}, new GLenum[2]{GL_FLOAT, GL_UNSIGNED_INT});
+		}
+		Vec3f* transparentVertices = nullptr;
+		unsigned int* transparentTypes = nullptr;
+		unsigned int* transparentIndices = nullptr;
+		int transparentVerticesIndex = 0;
+		int transparentIndicesIndex = 0;
+		if (transparentVertexCount != 0) {
+			transparentVertices = new Vec3f[transparentVertexCount];
+			transparentTypes = new unsigned int[transparentVertexCount];
+			transparentIndices = new unsigned int[transparentIndexCount];
+			chunk->transparentMesh = new Mesh(transparentVertexCount, transparentIndexCount);
+			chunk->transparentMesh->setAttributesDefinition(2, new int[2]{3, 1}, new GLenum[2]{GL_FLOAT, GL_UNSIGNED_INT});
+		}
+		for (int y = 0; y < CHUNK_SIZE; y++) {
+			for (int z = 0; z < CHUNK_SIZE; z++) {
+				for (int x = 0; x < CHUNK_SIZE; x++) {
+					Vec3c voxelPos = Vec3c(x, y, z);
+					Voxel& voxel = chunk->voxels[zorder(voxelPos)];
+					if (voxel.type == VoxelType::air) continue;
+					if (voxel.type->isTransparent) {
+						if (transparentVertexCount == 0) continue;
+						for (int side = 0; side < 6; side++) {
+							if (hasVisibleSideTransparent(chunk, voxelPos, voxel.type, side)) {
+								fillFace(transparentVertices, transparentTypes, transparentVerticesIndex, transparentIndices, transparentIndicesIndex, Vec3f(voxelPos.x, voxelPos.y, voxelPos.z), side, voxel.type->id);
+								transparentVerticesIndex += 4;
+								transparentIndicesIndex += 6;
+							}
 						}
-					}
-				} else {
-					if (opaqueVertexCount == 0) continue;
-					for (int side = 0; side < 6; side++) {
-						if (hasVisibleSideOpaque(chunk, voxelPos, side)) {
-							fillFace(opaqueVertices, opaqueTypes, opaqueVerticesIndex, opaqueIndices, opaqueIndicesIndex, Vec3f(voxelPos.x, voxelPos.y, voxelPos.z), side, voxel.type->id);
-							opaqueVerticesIndex += 4;
-							opaqueIndicesIndex += 6;
+					} else {
+						if (opaqueVertexCount == 0) continue;
+						for (int side = 0; side < 6; side++) {
+							if (hasVisibleSideOpaque(chunk, voxelPos, side)) {
+								fillFace(opaqueVertices, opaqueTypes, opaqueVerticesIndex, opaqueIndices, opaqueIndicesIndex, Vec3f(voxelPos.x, voxelPos.y, voxelPos.z), side, voxel.type->id);
+								opaqueVerticesIndex += 4;
+								opaqueIndicesIndex += 6;
+							}
 						}
 					}
 				}
 			}
 		}
-	}
-	if (opaqueVertexCount != 0) {
-		chunk->opaqueMesh->setAttribute(0, (float*)opaqueVertices);
-		chunk->opaqueMesh->setAttribute(1, opaqueTypes);
-		chunk->opaqueMesh->setIndices(opaqueIndices);
-		delete[] opaqueVertices;
-		delete[] opaqueTypes;
-		chunk->opaqueMesh->uploadToGL();
-		chunk->opaqueMesh->deleteLocal();
+		if (opaqueVertexCount != 0) {
+			chunk->opaqueMesh->setAttribute(0, (float*) opaqueVertices);
+			chunk->opaqueMesh->setAttribute(1, opaqueTypes);
+			chunk->opaqueMesh->setIndices(opaqueIndices);
+			delete[] opaqueVertices;
+			delete[] opaqueTypes;
+			chunk->opaqueMesh->uploadToGL();
+			chunk->opaqueMesh->deleteLocal();
+		}
+
+		if (transparentVertexCount != 0) {
+			chunk->transparentMesh->setAttribute(0, (float*) transparentVertices);
+			chunk->transparentMesh->setAttribute(1, transparentTypes);
+			chunk->transparentMesh->setIndices(transparentIndices);
+			delete[] transparentVertices;
+			delete[] transparentTypes;
+			chunk->transparentMesh->uploadToGL();
+			chunk->transparentMesh->deleteLocal();
+		}
 	}
 
-	if (transparentVertexCount != 0) {
-		chunk->transparentMesh->setAttribute(0, (float*)transparentVertices);
-		chunk->transparentMesh->setAttribute(1, transparentTypes);
-		chunk->transparentMesh->setIndices(transparentIndices);
-		delete[] transparentVertices;
-		delete[] transparentTypes;
-		chunk->transparentMesh->uploadToGL();
-		chunk->transparentMesh->deleteLocal();
-	}
-
+	Debug::log("WorldMesher", ("Meshed Chunk(" + std::to_string(chunk->position.x) + ", " + std::to_string(chunk->position.y) + ", " + std::to_string(chunk->position.z) + ")").c_str());
+	chunk->meshed = true;
 }
 
 bool WorldMesher::hasVisibleSideOpaque(Chunk* chunk, Vec3c voxPos, int side) {
