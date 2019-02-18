@@ -120,5 +120,8 @@ bool World::raycast(const Ray& ray, float distance, Vec3f& intersect, Voxel*& in
 }
 
 void World::remeshChunk(Chunk* chunk) {
+	if (chunk == nullptr) return;
+	delete chunk->opaqueMesh;
+	delete chunk->transparentMesh;
 	mesher.processChunk(chunk);
 }

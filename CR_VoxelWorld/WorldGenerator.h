@@ -13,5 +13,7 @@ public:
 
 private:
 	unsigned int seed;
+
+	float densityAt(Vec3f worldPos);
 };
 

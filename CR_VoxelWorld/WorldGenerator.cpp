@@ -21,11 +21,7 @@ Chunk* WorldGenerator::generateChunk(Vec3i chkPos) {
 		for (int z = 0; z < noiseGridRes; z++) {
 			for (int x = 0; x < noiseGridRes; x++) {
 				Vec3f worldPos = Vec3f(chkPos.x * CHUNK_SIZE + x * noiseGridCellSize, chkPos.y * CHUNK_SIZE + y * noiseGridCellSize, chkPos.z * CHUNK_SIZE + z * noiseGridCellSize);
-				float noise = perlinf(worldPos.x * 0.05f, worldPos.y * 0.05f, worldPos.z * 0.05f);
-				float interpHeight = (perlinf(worldPos.x * 0.003f, 0, worldPos.z * 0.003f) * 0.5f + 0.5f) * 32.0f;
-				noise -= (worldPos.y - interpHeight) / (interpHeight * 0.5f);
-				noise += (perlinf(worldPos.x * 0.003f, worldPos.y * 0.003f, worldPos.z * 0.003f) * 0.5f + 0.5f) * ((worldPos.y - interpHeight) / (interpHeight * 0.45f));
-				noiseMap[x][y][z] = noise;
+				noiseMap[x][y][z] = densityAt(worldPos);
 			}
 		}
 	}
@@ -96,5 +92,13 @@ Chunk* WorldGenerator::generateChunk(Vec3i chkPos) {
 
 	Debug::log("WorldGen", ("Generated Chunk(" + std::to_string(chkPos.x) + ", " + std::to_string(chkPos.y) + ", " + std::to_string(chkPos.z) + ")").c_str());
 	return chunk;
+}
+
+float WorldGenerator::densityAt(Vec3f worldPos) {
+	float noise = perlinf(worldPos.x * 0.05f, worldPos.y * 0.05f, worldPos.z * 0.05f);
+	float interpHeight = (perlinf(worldPos.x * 0.003f, 0, worldPos.z * 0.003f) * 0.5f + 0.5f) * 32.0f;
+	noise -= (worldPos.y - interpHeight) / (interpHeight * 0.5f);
+	noise += (perlinf(worldPos.x * 0.003f, worldPos.y * 0.003f, worldPos.z * 0.003f) * 0.5f + 0.5f) * ((worldPos.y - interpHeight) / (interpHeight * 0.45f));
+	return noise;
 }
 

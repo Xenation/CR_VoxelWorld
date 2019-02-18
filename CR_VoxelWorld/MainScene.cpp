@@ -19,7 +19,7 @@ MainScene::~MainScene() {}
 
 void MainScene::load() {
 	Scene::load();
-	camera = new Entity();
+	camera = new Entity("Camera");
 	camera->addComponent<Camera>();
 	camera->addComponent<NoclipController>()->lookSensivity = 1;
 	BlockRaycaster* br = camera->addComponent<BlockRaycaster>();
@@ -53,13 +53,13 @@ void MainScene::load() {
 		});
 	cubeMesh->uploadToGL();
 
-	cube = new Entity();
+	cube = new Entity("DebugCube");
 	MeshRenderer* cubeRend = cube->addComponent<MeshRenderer>();
 	ShaderProgram::find("basic")->load();
 	cubeRend->setShaderProgram(ShaderProgram::find("basic"));
 	cubeRend->setMesh(cubeMesh);
 
-	worldEntity = new Entity();
+	worldEntity = new Entity("World");
 	World* world = worldEntity->addComponent<World>();
 
 	br->world = world;
