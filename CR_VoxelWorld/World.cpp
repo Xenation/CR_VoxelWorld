@@ -3,6 +3,7 @@
 #include <string>
 #include <Entity.h>
 #include <ShaderProgram.h>
+#include <Material.h>
 #include <Transform.h>
 #include "WorldRenderer.h"
 #include "Chunk.h"
@@ -17,13 +18,16 @@ World::~World() {}
 void World::onStart() {
 	ShaderProgram* voxelsShader = ShaderProgram::find("voxels");
 	voxelsShader->load();
+	worldMaterial = new Material(voxelsShader);
+	ShaderProgram* voxelShaderTransparent = ShaderProgram::find("voxels_transparent");
+	voxelShaderTransparent->load();
+	worldTransparentMaterial = new Material(voxelShaderTransparent);
 	WorldRenderer* opaqueRenderer = entity->addComponent<WorldRenderer>();
 	opaqueRenderer->world = this;
-	opaqueRenderer->setShaderProgram(voxelsShader);
+	opaqueRenderer->setMaterial(worldMaterial);
 	WorldRenderer* transparentRenderer = entity->addComponent<WorldRenderer>();
-	transparentRenderer->isTransparent = true;
 	transparentRenderer->world = this;
-	transparentRenderer->setShaderProgram(voxelsShader);
+	transparentRenderer->setMaterial(worldTransparentMaterial);
 }
 
 void World::onUpdate() {

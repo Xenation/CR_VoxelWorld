@@ -1,7 +1,10 @@
 #include "WorldRenderer.h"
 
 #include <Debug.h>
+#include <Engine.h>
+#include <Pipeline.h>
 #include <ShaderProgram.h>
+#include <Material.h>
 #include <unordered_map>
 #include "Chunk.h"
 #include "World.h"
@@ -16,11 +19,13 @@ WorldRenderer::~WorldRenderer() {}
 void WorldRenderer::render() {
 	if (world == nullptr) return;
 
+	bool isTransparent = material->shaderProgram->info->renderPass == Engine::pipeline->renderPasses[1];
 	for (std::pair<Vec3i, Chunk*> pair : world->chunks) {
 		if (isTransparent && pair.second->transparentMesh == nullptr) continue;
 		else if (!isTransparent && pair.second->opaqueMesh == nullptr) continue;
 		Matrix4x4f chkModel = Matrix4x4f::translation(Vec3f(pair.second->position.x * CHUNK_SIZE, pair.second->position.y * CHUNK_SIZE, pair.second->position.z * CHUNK_SIZE));
-		shaderProgram->loadModelMatrix(chkModel);
+		material->setField(0, chkModel);
+		material->updateFields();
 
 		if (isTransparent) {
 			pair.second->transparentMesh->render();

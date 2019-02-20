@@ -90,7 +90,7 @@ Chunk* WorldGenerator::generateChunk(Vec3i chkPos) {
 		}
 	}
 
-	Debug::log("WorldGen", ("Generated Chunk(" + std::to_string(chkPos.x) + ", " + std::to_string(chkPos.y) + ", " + std::to_string(chkPos.z) + ")").c_str());
+	//Debug::log("WorldGen", ("Generated Chunk(" + std::to_string(chkPos.x) + ", " + std::to_string(chkPos.y) + ", " + std::to_string(chkPos.z) + ")").c_str());
 	return chunk;
 }
 

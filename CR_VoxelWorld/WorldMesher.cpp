@@ -141,7 +141,7 @@ void WorldMesher::processChunk(Chunk* chunk) {
 		}
 	}
 
-	Debug::log("WorldMesher", ("Meshed Chunk(" + std::to_string(chunk->position.x) + ", " + std::to_string(chunk->position.y) + ", " + std::to_string(chunk->position.z) + ")").c_str());
+	//Debug::log("WorldMesher", ("Meshed Chunk(" + std::to_string(chunk->position.x) + ", " + std::to_string(chunk->position.y) + ", " + std::to_string(chunk->position.z) + ")").c_str());
 	chunk->meshed = true;
 }
 

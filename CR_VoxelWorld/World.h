@@ -7,8 +7,11 @@
 #include "WorldGenerator.h"
 #include "WorldMesher.h"
 #include "Voxel.h"
+
 class Transform;
 class Chunk;
+class Material;
+
 class World : public Component {
 public:
 	std::unordered_map<Vec3i, Chunk*, Vec3iHash> chunks;
@@ -31,6 +34,8 @@ public:
 	void remeshChunk(Chunk* chunk);
 
 private:
+	Material* worldMaterial;
+	Material* worldTransparentMaterial;
 	WorldGenerator generator;
 	WorldMesher mesher;
 };

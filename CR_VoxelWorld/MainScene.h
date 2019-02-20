@@ -1,7 +1,11 @@
 #pragma once
 #include <Scene.h>
+
 class Mesh;
 class Entity;
+class ShaderProgram;
+class Material;
+
 class MainScene : public Scene {
 public:
 	MainScene();
@@ -16,5 +20,7 @@ private:
 	Entity* cube;
 	Mesh* cubeMesh;
 	Entity* worldEntity;
+	ShaderProgram* basicShader;
+	Material* basicMaterial;
 };
 

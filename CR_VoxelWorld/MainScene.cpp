@@ -5,6 +5,7 @@
 #include <NoclipController.h>
 #include <MeshRenderer.h>
 #include <ShaderProgram.h>
+#include <Material.h>
 #include <Mesh.h>
 #include "World.h"
 #include "WorldRenderer.h"
@@ -55,8 +56,10 @@ void MainScene::load() {
 
 	cube = new Entity("DebugCube");
 	MeshRenderer* cubeRend = cube->addComponent<MeshRenderer>();
-	ShaderProgram::find("basic")->load();
-	cubeRend->setShaderProgram(ShaderProgram::find("basic"));
+	basicShader = ShaderProgram::find("basic");
+	basicShader->load();
+	basicMaterial = new Material(basicShader);
+	cubeRend->setMaterial(basicMaterial);
 	cubeRend->setMesh(cubeMesh);
 
 	worldEntity = new Entity("World");
@@ -75,5 +78,7 @@ void MainScene::destroy() {
 	Scene::destroy();
 	delete cube;
 	delete cubeMesh;
+	delete basicMaterial;
+	delete basicShader;
 	delete camera;
 }
