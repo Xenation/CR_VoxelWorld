@@ -58,7 +58,7 @@ void MainScene::load() {
 	MeshRenderer* cubeRend = cube->addComponent<MeshRenderer>();
 	basicShader = ShaderProgram::find("basic");
 	basicShader->load();
-	basicMaterial = new Material(basicShader);
+	basicMaterial = new Material(basicShader, "opaque");
 	cubeRend->setMaterial(basicMaterial);
 	cubeRend->setMesh(cubeMesh);
 

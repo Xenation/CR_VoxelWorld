@@ -77,7 +77,7 @@ void WorldMesher::processChunk(Chunk* chunk) {
 			opaqueVertices = new Vec3f[opaqueVertexCount];
 			opaqueTypes = new unsigned int[opaqueVertexCount];
 			opaqueIndices = new unsigned int[opaqueIndexCount];
-			chunk->opaqueMesh = new Mesh(opaqueVertexCount, opaqueIndexCount);
+			chunk->opaqueMesh = new Mesh("Chunk" + chunk->position.toString() + "-Opaque", opaqueVertexCount, opaqueIndexCount);
 			chunk->opaqueMesh->setAttributesDefinition(2, new int[2]{3, 1}, new GLenum[2]{GL_FLOAT, GL_UNSIGNED_INT});
 		}
 		Vec3f* transparentVertices = nullptr;
@@ -89,7 +89,7 @@ void WorldMesher::processChunk(Chunk* chunk) {
 			transparentVertices = new Vec3f[transparentVertexCount];
 			transparentTypes = new unsigned int[transparentVertexCount];
 			transparentIndices = new unsigned int[transparentIndexCount];
-			chunk->transparentMesh = new Mesh(transparentVertexCount, transparentIndexCount);
+			chunk->transparentMesh = new Mesh("Chunk" + chunk->position.toString() + "-Transparent", transparentVertexCount, transparentIndexCount);
 			chunk->transparentMesh->setAttributesDefinition(2, new int[2]{3, 1}, new GLenum[2]{GL_FLOAT, GL_UNSIGNED_INT});
 		}
 		for (int y = 0; y < CHUNK_SIZE; y++) {

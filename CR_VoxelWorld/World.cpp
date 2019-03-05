@@ -18,10 +18,8 @@ World::~World() {}
 void World::onStart() {
 	ShaderProgram* voxelsShader = ShaderProgram::find("voxels");
 	voxelsShader->load();
-	worldMaterial = new Material(voxelsShader);
-	ShaderProgram* voxelShaderTransparent = ShaderProgram::find("voxels_transparent");
-	voxelShaderTransparent->load();
-	worldTransparentMaterial = new Material(voxelShaderTransparent);
+	worldMaterial = new Material(voxelsShader, "opaque");
+	worldTransparentMaterial = new Material(voxelsShader, "transparent");
 	WorldRenderer* opaqueRenderer = entity->addComponent<WorldRenderer>();
 	opaqueRenderer->world = this;
 	opaqueRenderer->setMaterial(worldMaterial);

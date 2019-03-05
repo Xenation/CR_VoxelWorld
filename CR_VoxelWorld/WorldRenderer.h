@@ -11,5 +11,8 @@ public:
 	~WorldRenderer();
 
 	virtual void render() override;
+
+private:
+	bool isTransparent = false;
 };
 

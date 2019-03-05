@@ -1,5 +1,5 @@
 #version 420
-//meta pass opaque
+#pragma pass opaque transparent
 
 layout (location = 0) in vec4 vertexPos;
 layout (location = 1) in uint voxelType;

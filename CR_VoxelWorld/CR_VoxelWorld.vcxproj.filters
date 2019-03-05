@@ -40,9 +40,6 @@
     <Filter Include="Source Files\Components">
       <UniqueIdentifier>{9f0f685c-cf0f-4f27-835d-e4ff35277c09}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\shaders\voxels_transparent">
-      <UniqueIdentifier>{9a6728b0-f03d-43bf-a337-67f6480fc097}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -121,16 +118,8 @@
     <CopyFileToFolders Include="res\shaders\voxels\vs.glsl">
       <Filter>Resource Files\shaders\voxels</Filter>
     </CopyFileToFolders>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="res\shaders\voxels_transparent\fs.glsl">
-      <Filter>Resource Files\shaders\voxels_transparent</Filter>
-    </None>
-    <None Include="res\shaders\voxels_transparent\gs.glsl">
-      <Filter>Resource Files\shaders\voxels_transparent</Filter>
-    </None>
-    <None Include="res\shaders\voxels_transparent\vs.glsl">
-      <Filter>Resource Files\shaders\voxels_transparent</Filter>
-    </None>
+    <CopyFileToFolders Include="res\shaders\voxels_transparent\fs.glsl" />
+    <CopyFileToFolders Include="res\shaders\voxels_transparent\gs.glsl" />
+    <CopyFileToFolders Include="res\shaders\voxels_transparent\vs.glsl" />
   </ItemGroup>
 </Project>

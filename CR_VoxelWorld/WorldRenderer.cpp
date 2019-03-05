@@ -4,6 +4,7 @@
 #include <Engine.h>
 #include <Pipeline.h>
 #include <ShaderProgram.h>
+#include <SpecializedShaderProgram.h>
 #include <Material.h>
 #include <unordered_map>
 #include "Chunk.h"
@@ -11,7 +12,9 @@
 
 
 
-WorldRenderer::WorldRenderer(Entity* entity) : Renderer(entity) {}
+WorldRenderer::WorldRenderer(Entity* entity) : Renderer(entity) {
+	
+}
 
 WorldRenderer::~WorldRenderer() {}
 
@@ -19,7 +22,7 @@ WorldRenderer::~WorldRenderer() {}
 void WorldRenderer::render() {
 	if (world == nullptr) return;
 
-	bool isTransparent = material->shaderProgram->info->renderPass == Engine::pipeline->renderPasses[1];
+	isTransparent = material->specializedProgram->getRenderPass() == Engine::pipeline->renderPasses[1];
 	for (std::pair<Vec3i, Chunk*> pair : world->chunks) {
 		if (isTransparent && pair.second->transparentMesh == nullptr) continue;
 		else if (!isTransparent && pair.second->opaqueMesh == nullptr) continue;
