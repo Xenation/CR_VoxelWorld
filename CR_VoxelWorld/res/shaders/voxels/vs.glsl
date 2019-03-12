@@ -7,6 +7,7 @@ layout (location = 1) in uint voxelType;
 layout (std140, binding = 1) uniform CameraMatrices {
 	mat4x4 projectionMatrix;
 	mat4x4 viewMatrix;
+	ivec2 resolution;
 };
 layout (std140, binding = 2) uniform GlobalVariables {
 	float time;
@@ -14,6 +15,8 @@ layout (std140, binding = 2) uniform GlobalVariables {
 
 layout (std140, binding = 10) uniform Material {
 	mat4x4 modelMatrix;
+	vec4 liDir;
+	float ambient;
 };
 
 out vec4 worldPos;
