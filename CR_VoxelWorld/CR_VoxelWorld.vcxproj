@@ -149,6 +149,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainScene.cpp" />
     <ClCompile Include="Voxel.cpp" />
+    <ClCompile Include="VoxelWorldGame.cpp" />
     <ClCompile Include="World.cpp" />
     <ClCompile Include="WorldGenerator.cpp" />
     <ClCompile Include="WorldMesher.cpp" />
@@ -166,6 +167,7 @@
     <ClInclude Include="MainScene.h" />
     <ClInclude Include="VMath.h" />
     <ClInclude Include="Voxel.h" />
+    <ClInclude Include="VoxelWorldGame.h" />
     <ClInclude Include="VZOrder.h" />
     <ClInclude Include="World.h" />
     <ClInclude Include="WorldGenerator.h" />

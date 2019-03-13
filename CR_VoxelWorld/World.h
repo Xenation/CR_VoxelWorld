@@ -34,8 +34,6 @@ public:
 	void remeshChunk(Chunk* chunk);
 
 private:
-	Material* worldMaterial;
-	Material* worldTransparentMaterial;
 	WorldGenerator generator;
 	WorldMesher mesher;
 };

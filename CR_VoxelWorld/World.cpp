@@ -5,8 +5,11 @@
 #include <ShaderProgram.h>
 #include <Material.h>
 #include <Transform.h>
+#include <Engine.h>
+#include <Game.h>
 #include "WorldRenderer.h"
 #include "Chunk.h"
+#include "VoxelWorldGame.h"
 
 
 
@@ -18,14 +21,12 @@ World::~World() {}
 void World::onStart() {
 	ShaderProgram* voxelsShader = ShaderProgram::find("voxels");
 	voxelsShader->load();
-	worldMaterial = new Material(voxelsShader, "opaque");
-	worldTransparentMaterial = new Material(voxelsShader, "transparent");
 	WorldRenderer* opaqueRenderer = entity->addComponent<WorldRenderer>();
 	opaqueRenderer->world = this;
-	opaqueRenderer->setMaterial(worldMaterial);
+	opaqueRenderer->setMaterial(((VoxelWorldGame*) Engine::game)->voxelMaterialOpaque);
 	WorldRenderer* transparentRenderer = entity->addComponent<WorldRenderer>();
 	transparentRenderer->world = this;
-	transparentRenderer->setMaterial(worldTransparentMaterial);
+	transparentRenderer->setMaterial(((VoxelWorldGame*) Engine::game)->voxelMaterialTransparent);
 }
 
 void World::onUpdate() {

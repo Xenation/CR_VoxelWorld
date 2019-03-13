@@ -69,6 +69,9 @@
     <ClCompile Include="BlockRaycaster.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
+    <ClCompile Include="VoxelWorldGame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainScene.h">
@@ -101,6 +104,9 @@
     <ClInclude Include="VZOrder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="VoxelWorldGame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CopyFileToFolders Include="res\shaders\basic\fs.glsl">
@@ -118,8 +124,5 @@
     <CopyFileToFolders Include="res\shaders\voxels\vs.glsl">
       <Filter>Resource Files\shaders\voxels</Filter>
     </CopyFileToFolders>
-    <CopyFileToFolders Include="res\shaders\voxels_transparent\fs.glsl" />
-    <CopyFileToFolders Include="res\shaders\voxels_transparent\gs.glsl" />
-    <CopyFileToFolders Include="res\shaders\voxels_transparent\vs.glsl" />
   </ItemGroup>
 </Project>
