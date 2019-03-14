@@ -4,7 +4,6 @@ in vec3 normal;
 in vec4 color;
 
 layout (std140, binding = 10) uniform Material {
-	mat4x4 modelMatrix;
 	vec4 liDir;
 	float ambient;
 };

@@ -56,10 +56,7 @@ void MainScene::load() {
 
 	cube = new Entity("DebugCube");
 	MeshRenderer* cubeRend = cube->addComponent<MeshRenderer>();
-	basicShader = ShaderProgram::find("basic");
-	basicShader->load();
-	basicMaterial = new Material(basicShader, "opaque");
-	cubeRend->setMaterial(basicMaterial);
+	cubeRend->setMaterial(Material::find("Basic"));
 	cubeRend->setMesh(cubeMesh);
 
 	worldEntity = new Entity("World");
@@ -78,7 +75,5 @@ void MainScene::destroy() {
 	Scene::destroy();
 	delete cube;
 	delete cubeMesh;
-	delete basicMaterial;
-	delete basicShader;
 	delete camera;
 }

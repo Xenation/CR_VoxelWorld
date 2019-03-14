@@ -20,7 +20,5 @@ private:
 	Entity* cube;
 	Mesh* cubeMesh;
 	Entity* worldEntity;
-	ShaderProgram* basicShader;
-	Material* basicMaterial;
 };
 

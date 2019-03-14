@@ -14,10 +14,11 @@ layout (std140, binding = 2) uniform GlobalVariables {
 };
 
 layout (std140, binding = 10) uniform Material {
-	mat4x4 modelMatrix;
 	vec4 liDir;
 	float ambient;
 };
+
+uniform mat4x4 modelMatrix;
 
 out vec4 worldPos;
 out vec4 vColor;

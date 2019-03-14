@@ -19,6 +19,11 @@ WorldRenderer::WorldRenderer(Entity* entity) : Renderer(entity) {
 WorldRenderer::~WorldRenderer() {}
 
 
+void WorldRenderer::setMaterial(Material* mat) {
+	Renderer::setMaterial(mat);
+	modelMatrixLocation = material->specializedProgram->getUniformLocation("modelMatrix");
+}
+
 void WorldRenderer::render() {
 	if (world == nullptr) return;
 
@@ -27,8 +32,7 @@ void WorldRenderer::render() {
 		if (isTransparent && pair.second->transparentMesh == nullptr) continue;
 		else if (!isTransparent && pair.second->opaqueMesh == nullptr) continue;
 		Matrix4x4f chkModel = Matrix4x4f::translation(Vec3f(pair.second->position.x * CHUNK_SIZE, pair.second->position.y * CHUNK_SIZE, pair.second->position.z * CHUNK_SIZE));
-		material->setField(0, chkModel);
-		material->updateFields();
+		material->specializedProgram->loadMatrix4x4f(modelMatrixLocation, chkModel);
 
 		if (isTransparent) {
 			pair.second->transparentMesh->render();

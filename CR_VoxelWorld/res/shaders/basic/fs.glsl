@@ -1,9 +1,9 @@
 #version 400
 
-in vec4 worldPos;
+in vec4 vColor;
 
 out vec4 fragColor;
 
 void main() {
-	fragColor = vec4(abs(worldPos.xyz), 1.0);
+	fragColor = vColor;
 }
