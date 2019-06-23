@@ -33,7 +33,7 @@ Chunk* WorldGenerator::generateChunk(Vec3i chkPos) {
 				Vec3c voxelPos = Vec3c(x, y, z);
 				Vec3c noisePos = voxelPos / noiseGridCellSize;
 				Vec3f noiseRelative = Vec3f(voxelPos.x, voxelPos.y, voxelPos.z) / noiseGridCellSize - Vec3f(noisePos.x, noisePos.y, noisePos.z);
-
+				
 				float noise = lerpf(
 					lerpf( // Z-
 						lerpf(noiseMap[noisePos.x][noisePos.y][noisePos.z], noiseMap[noisePos.x + 1][noisePos.y][noisePos.z], noiseRelative.x), // Y-

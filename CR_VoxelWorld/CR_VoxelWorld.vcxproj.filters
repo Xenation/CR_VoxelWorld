@@ -72,6 +72,9 @@
     <ClCompile Include="VoxelWorldGame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="WorldRigidbody.cpp">
+      <Filter>Source Files\World</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainScene.h">
@@ -106,6 +109,9 @@
     </ClInclude>
     <ClInclude Include="VoxelWorldGame.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WorldRigidbody.h">
+      <Filter>Header Files\World</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

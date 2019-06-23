@@ -2,6 +2,7 @@
 
 #include <string>
 #include <Debug.h>
+#include <ConcaveMeshCollider.h>
 #include "World.h"
 #include "Chunk.h"
 #include "Voxel.h"
@@ -127,7 +128,8 @@ void WorldMesher::processChunk(Chunk* chunk) {
 			delete[] opaqueVertices;
 			delete[] opaqueTypes;
 			chunk->opaqueMesh->uploadToGL();
-			chunk->opaqueMesh->deleteLocal();
+			chunk->collider = new ConcaveMeshCollider(chunk->opaqueMesh);
+			//chunk->opaqueMesh->deleteLocal();
 		}
 
 		if (transparentVertexCount != 0) {

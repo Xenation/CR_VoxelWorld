@@ -9,6 +9,8 @@
 #define CHUNK_VOXEL_COUNT (CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE)
 
 class World;
+class Collider;
+
 class Chunk {
 public:
 	Vec3i position;
@@ -18,6 +20,7 @@ public:
 	Mesh* opaqueMesh = nullptr;
 	Mesh* transparentMesh = nullptr;
 	bool meshed = false;
+	Collider* collider = nullptr;
 
 	inline Voxel& getVoxel(const Vec3c& pos) {
 		return voxels[zorder(pos)];

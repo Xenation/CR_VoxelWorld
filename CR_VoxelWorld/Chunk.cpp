@@ -1,15 +1,20 @@
 #include "Chunk.h"
 
+#include <Collider.h>
 #include "World.h"
 
 
 
 Chunk::Chunk(Vec3i pos, World* world) : position(pos), world(world) {
 	linkAdjacentChunks();
+	collider = Collider::empty;
 }
 
 Chunk::~Chunk() {
 	unlinkAdjacentChunks();
+	if (collider != Collider::empty) {
+		delete collider;
+	}
 }
 
 

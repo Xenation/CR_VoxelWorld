@@ -7,6 +7,9 @@
 #include <ShaderProgram.h>
 #include <Material.h>
 #include <Mesh.h>
+#include <Collider.h>
+#include <BoxCollider.h>
+#include <Rigidbody.h>
 #include "World.h"
 #include "WorldRenderer.h"
 #include "BlockRaycaster.h"
@@ -25,6 +28,7 @@ void MainScene::load() {
 	camera->addComponent<NoclipController>()->lookSensivity = 1;
 	BlockRaycaster* br = camera->addComponent<BlockRaycaster>();
 	camera->transform->setPosition({16, 32, 16});
+	camera->transform->setRotation(Quaternion::euler({M_PI_4, M_PI_4, 0.0f}));
 
 	cubeMesh = new Mesh(8, 36);
 	cubeMesh->setAttributesDefinition(1, new int[1]{3});
@@ -65,6 +69,18 @@ void MainScene::load() {
 
 	br->world = world;
 	br->debugEntity = cube;
+
+	Collider* cubeCollider = new BoxCollider({0.5f, 0.5f, 0.5f});
+
+	Entity* physCube = new Entity("Physics Cube");
+	physCube->setParent(worldEntity);
+	physCube->transform->setPosition({ 17.1f, 32, 32 });
+	MeshRenderer* physCubeRend = physCube->addComponent<MeshRenderer>();
+	physCubeRend->setMaterial(Material::find("Basic"));
+	physCubeRend->setMesh(cubeMesh);
+	Rigidbody* physCubeRb = physCube->addComponent<Rigidbody>();
+	physCubeRb->setCollider(cubeCollider);
+	physCubeRb->setMass(1.0f);
 }
 
 void MainScene::update() {

@@ -10,6 +10,7 @@
 #include "WorldRenderer.h"
 #include "Chunk.h"
 #include "VoxelWorldGame.h"
+#include "WorldRigidbody.h"
 
 
 
@@ -27,6 +28,8 @@ void World::onStart() {
 	WorldRenderer* transparentRenderer = entity->addComponent<WorldRenderer>();
 	transparentRenderer->world = this;
 	transparentRenderer->setMaterial(((VoxelWorldGame*) Engine::game)->voxelMaterialTransparent);
+	WorldRigidbody* rigidbody = entity->addComponent<WorldRigidbody>();
+	rigidbody->world = this;
 }
 
 void World::onUpdate() {
