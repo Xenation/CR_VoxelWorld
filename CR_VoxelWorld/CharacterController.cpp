@@ -21,7 +21,7 @@ CharacterController::~CharacterController() {
 void CharacterController::onStart() {
 	rigidbody = entity->getComponent<Rigidbody>();
 	if (rigidbody == nullptr) return;
-	collider = new BoxCollider({.2f, 1.0f, .2f});
+	collider = new BoxCollider({.2f, .9f, .2f});
 	rigidbody->setCollider(collider);
 	rigidbody->setMass(1.0f);
 	rigidbody->getBulletBody()->setAngularFactor(btVector3(0, 0, 0));

@@ -3,6 +3,7 @@
 
 class btCompoundShape;
 class World;
+class Chunk;
 
 class WorldRigidbody : public Rigidbody {
 public:
@@ -11,6 +12,7 @@ public:
 	WorldRigidbody(Entity* entity);
 	~WorldRigidbody();
 
-	virtual void onUpdate() override;
+	void addChunk(Chunk* chunk);
+	void removeChunk(Chunk* chunk);
 };
 

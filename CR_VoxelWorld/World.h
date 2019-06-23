@@ -11,6 +11,7 @@
 class Transform;
 class Chunk;
 class Material;
+class WorldRigidbody;
 
 class World : public Component {
 public:
@@ -36,5 +37,6 @@ public:
 private:
 	WorldGenerator generator;
 	WorldMesher mesher;
+	WorldRigidbody* rigidbody;
 };
 

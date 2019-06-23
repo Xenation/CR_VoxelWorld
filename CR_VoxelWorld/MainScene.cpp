@@ -65,6 +65,7 @@ void MainScene::load() {
 	cubeMesh->uploadToGL();
 
 	cube = new Entity("DebugCube");
+	cube->transform->setScale({.1f, .1f, .1f});
 	MeshRenderer* cubeRend = cube->addComponent<MeshRenderer>();
 	cubeRend->setMaterial(Material::find("Basic"));
 	cubeRend->setMesh(cubeMesh);

@@ -16,11 +16,14 @@ WorldRigidbody::WorldRigidbody(Entity* entity) : Rigidbody(entity, new CompoundC
 WorldRigidbody::~WorldRigidbody() {}
 
 
-void WorldRigidbody::onUpdate() {
+void WorldRigidbody::addChunk(Chunk* chunk) {
 	Engine::physicsWorld->unregisterRigidbody(this);
-	for (std::pair<Vec3i, Chunk*> pair : world->chunks) {
-		if (pair.second->collider->_parent != nullptr || !pair.second->meshed || pair.second->opaqueMesh == nullptr) continue;
-		((CompoundCollider*) collider)->addCollider(pair.second->collider, Vec3f(pair.second->position.x * CHUNK_SIZE, pair.second->position.y * CHUNK_SIZE, pair.second->position.z * CHUNK_SIZE), Quaternion::identity);
-	}
+	((CompoundCollider*) collider)->addCollider(chunk->collider, Vec3f(chunk->position.x * CHUNK_SIZE, chunk->position.y * CHUNK_SIZE, chunk->position.z * CHUNK_SIZE), Quaternion::identity);
+	Engine::physicsWorld->registerRigidbody(this);
+}
+
+void WorldRigidbody::removeChunk(Chunk* chunk) {
+	Engine::physicsWorld->unregisterRigidbody(this);
+	((CompoundCollider*) collider)->removeCollider(chunk->collider);
 	Engine::physicsWorld->registerRigidbody(this);
 }

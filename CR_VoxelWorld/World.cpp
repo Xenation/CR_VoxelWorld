@@ -28,7 +28,7 @@ void World::onStart() {
 	WorldRenderer* transparentRenderer = entity->addComponent<WorldRenderer>();
 	transparentRenderer->world = this;
 	transparentRenderer->setMaterial(((VoxelWorldGame*) Engine::game)->voxelMaterialTransparent);
-	WorldRigidbody* rigidbody = entity->addComponent<WorldRigidbody>();
+	rigidbody = entity->addComponent<WorldRigidbody>();
 	rigidbody->world = this;
 }
 
@@ -42,6 +42,7 @@ void World::onUpdate() {
 		Vec3i toChunk = pair.first - viewerChunkPos;
 		int sqrDistance = toChunk.x * toChunk.x + toChunk.y * toChunk.y + toChunk.z * toChunk.z;
 		if (sqrDistance > sqrViewDistance) {
+			rigidbody->removeChunk(pair.second);
 			delete pair.second;
 			toRemove.add(pair.first);
 		}
@@ -78,6 +79,7 @@ void World::onUpdate() {
 				Chunk* chunk = getChunkAt(chkPos);
 				if (chunk == nullptr || chunk->meshed) continue;
 				mesher.processChunk(chunk);
+				if (chunk->meshed) rigidbody->addChunk(chunk);
 			}
 		}
 	}
@@ -137,7 +139,8 @@ bool World::raycast(const Ray& ray, float distance, Vec3f& intersect, Voxel*& in
 		for (int y = min.y; y <= max.y; y++) {
 			for (int z = min.z; z <= max.z; z++) {
 				Vec3i voxPos = Vec3i(x, y, z);
-				Voxel* voxel = getVoxelAt(voxPos, intersectChunk);
+				Chunk* chunk;
+				Voxel* voxel = getVoxelAt(voxPos, chunk);
 				if (voxel == nullptr || voxel->type == VoxelType::air) continue;
 				Vec3f voxIntersect;
 				float dist;
@@ -147,6 +150,7 @@ bool World::raycast(const Ray& ray, float distance, Vec3f& intersect, Voxel*& in
 						intersect = voxIntersect;
 						hasIntersected = true;
 						intersectVoxel = voxel;
+						intersectChunk = chunk;
 					}
 				}
 			}
@@ -159,5 +163,8 @@ void World::remeshChunk(Chunk* chunk) {
 	if (chunk == nullptr) return;
 	delete chunk->opaqueMesh;
 	delete chunk->transparentMesh;
+	rigidbody->removeChunk(chunk);
+	delete chunk->collider;
 	mesher.processChunk(chunk);
+	if (chunk->meshed) rigidbody->addChunk(chunk);
 }
