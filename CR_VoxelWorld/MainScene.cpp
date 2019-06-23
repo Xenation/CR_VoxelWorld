@@ -2,7 +2,6 @@
 
 #include <Entity.h>
 #include <Camera.h>
-#include <NoclipController.h>
 #include <MeshRenderer.h>
 #include <ShaderProgram.h>
 #include <Material.h>
@@ -13,6 +12,7 @@
 #include "World.h"
 #include "WorldRenderer.h"
 #include "BlockRaycaster.h"
+#include "CharacterController.h"
 
 
 
@@ -23,12 +23,18 @@ MainScene::~MainScene() {}
 
 void MainScene::load() {
 	Scene::load();
-	camera = new Entity("Camera");
+	player = new Entity("Player");
+	Entity* camera = new Entity("Camera");
 	camera->addComponent<Camera>();
-	camera->addComponent<NoclipController>()->lookSensivity = 1;
+	camera->setParent(player);
+	camera->transform->setPosition({0, 0.5f, 0});
+	player->transform->setPosition({16, 32, 16});
+	player->addComponent<Rigidbody>();
+	CharacterController* controller = player->addComponent<CharacterController>();
+	controller->lookSensivity = 1.0f;
+	controller->camera = camera;
 	BlockRaycaster* br = camera->addComponent<BlockRaycaster>();
-	camera->transform->setPosition({16, 32, 16});
-	camera->transform->setRotation(Quaternion::euler({M_PI_4, M_PI_4, 0.0f}));
+	//player->transform->setRotation(Quaternion::euler({M_PI_4, M_PI_4, 0.0f}));
 
 	cubeMesh = new Mesh(8, 36);
 	cubeMesh->setAttributesDefinition(1, new int[1]{3});
@@ -65,7 +71,7 @@ void MainScene::load() {
 
 	worldEntity = new Entity("World");
 	World* world = worldEntity->addComponent<World>();
-	world->viewer = camera->transform;
+	world->viewer = player->transform;
 
 	br->world = world;
 	br->debugEntity = cube;
@@ -91,5 +97,5 @@ void MainScene::destroy() {
 	Scene::destroy();
 	delete cube;
 	delete cubeMesh;
-	delete camera;
+	delete player;
 }

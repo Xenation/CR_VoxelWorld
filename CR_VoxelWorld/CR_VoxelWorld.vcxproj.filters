@@ -75,6 +75,9 @@
     <ClCompile Include="WorldRigidbody.cpp">
       <Filter>Source Files\World</Filter>
     </ClCompile>
+    <ClCompile Include="CharacterController.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainScene.h">
@@ -112,6 +115,9 @@
     </ClInclude>
     <ClInclude Include="WorldRigidbody.h">
       <Filter>Header Files\World</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterController.h">
+      <Filter>Header Files\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

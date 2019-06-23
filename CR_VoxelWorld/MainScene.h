@@ -16,7 +16,7 @@ public:
 	virtual void destroy() override;
 
 private:
-	Entity* camera;
+	Entity* player;
 	Entity* cube;
 	Mesh* cubeMesh;
 	Entity* worldEntity;

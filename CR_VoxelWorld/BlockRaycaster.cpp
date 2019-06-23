@@ -24,8 +24,8 @@ void BlockRaycaster::onUpdate() {
 	Vec3f pos;
 	Voxel* voxel;
 	Chunk* chunk;
-	if (Input::getMouseDown(MouseButton::LEFT) && world->raycast(Ray(transform->getPosition(), transform->forward()), raycastRange, pos, voxel, chunk)) {
-		debugEntity->transform->setPosition(pos);
+	if (Input::getMouseDown(MouseButton::LEFT) && world->raycast(Ray(transform->getWorldPosition(), transform->forward()), raycastRange, pos, voxel, chunk)) {
+		debugEntity->transform->setWorldPosition(pos);
 		voxel->type = VoxelType::air;
 		world->remeshChunk(chunk);
 	}
