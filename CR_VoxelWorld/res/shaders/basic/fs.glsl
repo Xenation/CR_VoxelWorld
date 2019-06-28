@@ -1,9 +1,17 @@
-#version 400
+#version 420
 
-in vec4 vColor;
+layout (std140, binding = 10) uniform Material {
+	vec4 color;
+	vec4 lightDir;
+	float ambient;
+};
+
+in vec3 normal;
 
 out vec4 fragColor;
 
 void main() {
-	fragColor = vColor;
+	vec3 light = normalize(lightDir.xyz);
+	vec4 diffuse = vec4(color.rgb * max(ambient, dot(normal, light)), color.a);
+	fragColor = diffuse;
 }

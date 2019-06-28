@@ -40,6 +40,9 @@
     <Filter Include="Source Files\Components">
       <UniqueIdentifier>{9f0f685c-cf0f-4f27-835d-e4ff35277c09}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\shaders\particle_basic">
+      <UniqueIdentifier>{1d2fcbb1-665b-4e66-b3e5-912d0c47d62d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -136,5 +139,13 @@
     <CopyFileToFolders Include="res\shaders\voxels\vs.glsl">
       <Filter>Resource Files\shaders\voxels</Filter>
     </CopyFileToFolders>
+    <CopyFileToFolders Include="res\shaders\particle_basic\fs.glsl" />
+    <CopyFileToFolders Include="res\shaders\particle_basic\gs.glsl" />
+    <CopyFileToFolders Include="res\shaders\particle_basic\vs.glsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\shaders\basic\gs.glsl">
+      <Filter>Resource Files\shaders\basic</Filter>
+    </None>
   </ItemGroup>
 </Project>

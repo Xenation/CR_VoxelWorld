@@ -26,7 +26,16 @@ void VoxelWorldGame::initialize() {
 	basicShader->load();
 	basicMaterial = new Material("Basic", basicShader, "opaque");
 	basicMaterial->setField(0, Color(0, 1, 1));
+	basicMaterial->setField(1, Vec4f(1.5f, -2.0f, -1.0f, 0));
+	basicMaterial->setField(2, 0.15f);
 	basicMaterial->updateFields();
+
+	particleShader = ShaderProgram::find("particle_basic");
+	if (particleShader != nullptr) {
+		particleShader->load();
+	}
+	particleMaterial = new Material("ParticleBasic", particleShader, "transparent");
+	particleMaterial->setField(0, Color(1.0f, 0.6f, 0.0f));
 }
 
 void VoxelWorldGame::preUpdate() {

@@ -11,6 +11,8 @@ public:
 	Material* voxelMaterialTransparent;
 	ShaderProgram* basicShader;
 	Material* basicMaterial;
+	ShaderProgram* particleShader;
+	Material* particleMaterial;
 
 	VoxelWorldGame();
 	~VoxelWorldGame();

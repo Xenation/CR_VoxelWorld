@@ -11,13 +11,15 @@ layout (std140, binding = 1) uniform CameraMatrices {
 
 layout (std140, binding = 10) uniform Material {
 	vec4 color;
+	vec4 lightDir;
+	float ambient;
 };
 
 uniform mat4x4 modelMatrix;
 
-out vec4 vColor;
+out vec4 worldPos;
 
 void main() {
-	vColor = color;
-	gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(vertexPos, 1.0);
+	worldPos = modelMatrix * vec4(vertexPos, 1.0);
+	gl_Position = projectionMatrix * viewMatrix * worldPos;
 }

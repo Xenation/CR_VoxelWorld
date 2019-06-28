@@ -8,6 +8,7 @@ layout (std140, binding = 1) uniform CameraMatrices {
 	mat4x4 projectionMatrix;
 	mat4x4 viewMatrix;
 	ivec2 resolution;
+	uint sampleCount;
 };
 layout (std140, binding = 2) uniform GlobalVariables {
 	float time;

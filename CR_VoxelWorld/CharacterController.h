@@ -5,12 +5,15 @@
 class Entity;
 class Rigidbody;
 class Collider;
+class ParticleSystem;
 
 class CharacterController : public Component {
 public:
 	float speed = 4.0f;
+	float jetpackForce = 14.0f;
 	float lookSensivity = 1.0f;
 	Entity* camera = nullptr;
+	ParticleSystem* jetpackSystem = nullptr;
 
 	CharacterController(Entity* entity);
 	~CharacterController();
@@ -24,5 +27,6 @@ private:
 	Vec3f eulerRot = Vec3f::zero;
 	Rigidbody* rigidbody = nullptr;
 	Collider* collider = nullptr;
+	bool noclipMode = false;
 };
 
